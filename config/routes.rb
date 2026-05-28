@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get "/money", to: "money#exchange"
   get "/students", to: "students#index"
   get "/students/:id", to: "students#show"
+  get "/testing_erb", to: "pages#erb"
 end
