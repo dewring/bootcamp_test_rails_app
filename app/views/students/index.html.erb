@@ -1,0 +1,8 @@
+<!--app/views/students/index.html.erb-->
+<h1>Students</h1>
+
+<ul>
+    <% @students.each_with_index do |student, index| %>
+        <li><%= index %>: <%= student %></li>
+    <% end %>
+</ul>
