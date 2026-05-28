@@ -1,5 +1,9 @@
 class StudentsController < ApplicationController
-  STUDENTS = [ "Kelvin", "Leika", "Jade", "Litzi" ]
+  STUDENTS = [
+    { name: "Kelvin", language: "Ruby" },
+    { name: "Jade", language: "Ruby" },
+    { name: "Litzi", language: "Ruby" }
+  ]
   def index
     @students = STUDENTS
   end
