@@ -6,7 +6,7 @@ class Money
   end
 
   def initialize(input_currency)
-    if input_currency == "cad" || input_currency == "mxn" || input_currency == "usd"
+    if input_currency == "cad" || input_currency == "mxn" || input_currency == "usd" || input_currency == "euro"
       @currency = input_currency
     else
       raise InvalidCurrencyError, "wrong currency"
@@ -24,6 +24,8 @@ class Money
       krw * 0.013
     elsif @currency == "usd"
       krw * 0.0007
+    elsif @currency == "euro"
+      krw * 0.00057
     end
   end
 
