@@ -24,4 +24,8 @@ class AnimalTest < ActiveSupport::TestCase
       Animal.new("dog", "brown").cry
     end
   end
+  test "#describe ensure describe object" do
+    dog_animal = Animal.new("dog", "brown")
+    assert_equal "This object is a Animal.", dog_animal.describe
+  end
 end

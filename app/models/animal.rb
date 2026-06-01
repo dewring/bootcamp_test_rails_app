@@ -6,7 +6,7 @@ class Animal
   end
 
   include AnimalCry
-
+  include Describable
     def initialize(name, color)
       @name = name
       @color = color
