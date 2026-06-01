@@ -1,5 +1,6 @@
 <!--app/views/students/show.html.erb-->
 <h1>Student</h1>
 
-<p><%= @student %></p>
+<p><%= @student[:name] %></p>
 <h3>is babo</h3>
+<%= render "student", student: @student %>

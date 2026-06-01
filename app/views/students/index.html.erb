@@ -2,7 +2,7 @@
 <h1>Students</h1>
 
 <ul>
-    <% @students.each_with_index do |student, index| %>
-        <li><%= index %>: <%= student %></li>
+    <% @students.each do |student| %>
+        <%= render "student", student: student %>
     <% end %>
 </ul>
