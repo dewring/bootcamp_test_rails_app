@@ -10,10 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_27_025042) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_02_215545) do
   create_table "products", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "registrations", force: :cascade do |t|
+    t.integer "booster"
+    t.datetime "created_at", null: false
+    t.integer "point"
+    t.integer "school_class_id"
+    t.integer "student_id"
+    t.datetime "updated_at", null: false
+    t.index ["school_class_id"], name: "index_registrations_on_school_class_id"
+    t.index ["student_id"], name: "index_registrations_on_student_id"
+  end
+
+  create_table "school_classes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "subject"
+    t.integer "teacher_id"
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_school_classes_on_teacher_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "grade"
+    t.text "name"
+    t.text "term"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "name"
     t.datetime "updated_at", null: false
   end
 end
