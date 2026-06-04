@@ -12,14 +12,19 @@ class StudentsController < ApplicationController
              term: s.term }
         end
       end
+
+      format.html do
+        render(:index)
+      end
     end
   end
-
   # GET /students/:id
   def show
     @student = Student.find(params[:id])
-
     respond_to do |format|
+      format.html do
+      end
+
       format.json do
         render json: {
           id: @student.id,
@@ -29,6 +34,12 @@ class StudentsController < ApplicationController
           classes: @student.school_classes.pluck(:subject),
           teachers: @student.teachers.pluck(:name).uniq
         }
+      end
+    end
+  end
+  def new
+    respond_to do |format|
+      format.html do
       end
     end
   end
