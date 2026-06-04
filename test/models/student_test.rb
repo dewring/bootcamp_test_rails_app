@@ -26,7 +26,7 @@ class StudentTest < ActiveSupport::TestCase
 
   test "by_name scope should order students by name in ascending order" do
     first_student = Student.by_name.first
-    puts first_student.name
+    # puts first_student.name
     assert_equal "Chiikawa", first_student.name
   end
   test "in_first_term should return students in the first term" do
@@ -64,5 +64,27 @@ class StudentTest < ActiveSupport::TestCase
     hunting = SchoolClass.find_by(subject: "hunting")
     highest_student = Registration.where(school_class_id: hunting.id).order(point: :desc).first.student
     assert_equal "Usagi", highest_student.name
+  end
+  test "what is the sum of total booster of all students?" do
+    total_booster = Registration.sum(:booster)
+    assert_equal 60, total_booster
+    # i'm little bit confuse to :"" or "":
+  end
+  test "How many students are not in grade 2?" do
+    not_grade_2 = Student.where.not(grade: 2).count
+    assert_equal 2, not_grade_2
+  end
+  test "what are the names of all students?" do
+    student_list = Student.pluck(:name)
+    assert_equal [ "Chiikawa", "Hachiware", "Usagi", "Momonga" ], student_list
+  end
+  test "what are the names of all student not in grade 1" do
+    not_grade1_student_list = Student.where.not(grade: 1).pluck(:name)
+    assert_equal [ "Hachiware", "Usagi", "Momonga" ], not_grade1_student_list
+  end
+  test "calculate total point sum from chiikawa and hachiware" do
+    students = Student.where(name: [ "Chiikawa", "Hachiware" ]).pluck(:id)
+    total_point = Registration.where(student_id: students).sum(:point)
+    assert_equal 130, total_point
   end
 end
