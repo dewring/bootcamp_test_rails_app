@@ -1,13 +1,35 @@
 class StudentsController < ApplicationController
-  STUDENTS = [
-    { name: "Kelvin", language: "Ruby" },
-    { name: "Jade", language: "Ruby" },
-    { name: "Litzi", language: "Ruby" }
-  ]
+  # GET /students
   def index
-    @students = STUDENTS
+    @students = Student.all
+
+    respond_to do |format|
+      format.json do
+        render json: @students.map do |s|
+          { id: s.id,
+            name: s.name,
+            grade: s.grade,
+             term: s.term }
+        end
+      end
+    end
   end
+
+  # GET /students/:id
   def show
-    @student = STUDENTS[params[:id].to_i]
+    @student = Student.find(params[:id])
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          id: @student.id,
+          name: @student.name,
+          grade: @student.grade,
+          term: @student.term,
+          classes: @student.school_classes.pluck(:subject),
+          teachers: @student.teachers.pluck(:name).uniq
+        }
+      end
+    end
   end
 end
