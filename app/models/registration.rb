@@ -4,5 +4,5 @@ class Registration < ApplicationRecord
   validates :booster, numericality: { in: 0..100 }
 
   belongs_to :student
-  belongs_to :school_class, dependent: :destroy
+  belongs_to :school_class
 end
