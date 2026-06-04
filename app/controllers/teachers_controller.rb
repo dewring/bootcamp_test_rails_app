@@ -10,6 +10,9 @@ class TeachersController < ApplicationController
             end
           }
       end
+
+      format.html do
+      end
     end
   end
 
@@ -24,6 +27,21 @@ class TeachersController < ApplicationController
             name: @teacher.name
           }
         }
+      end
+
+      format.html do
+      end
+    end
+  end
+  def new
+    respond_to do |format|
+      format.html do
+      end
+    end
+  end
+  def edit
+    respond_to do |format|
+      format.html do
       end
     end
   end

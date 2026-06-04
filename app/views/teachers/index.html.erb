@@ -1,0 +1,10 @@
+<h1>Leika School</h1>
+<h2>teachers</h2>
+
+<% @teachers.each do |teacher| %>
+  <p>
+    ○ <a href="/teachers/<%= teacher.id %>">
+      <%= teacher.name %>
+    </a>
+  </p>
+<% end %>

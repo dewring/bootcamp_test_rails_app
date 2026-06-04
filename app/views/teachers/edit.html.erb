@@ -1,0 +1,18 @@
+<h1>Leika School</h1>
+
+<p>NAME: <%= @teacher.name %></p>
+
+<h3>EDIT TEACHER</h3>
+
+<p>
+  NAME:
+  <input type="text" value="<%= @teacher.name %>">
+</p>
+
+<button>SAVE</button>
+
+<br><br>
+
+<a href="/teachers/<%= @teacher.id %>">
+  Back to Teacher
+</a>
