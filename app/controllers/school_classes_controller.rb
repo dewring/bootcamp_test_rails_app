@@ -12,6 +12,8 @@ class SchoolClassesController < ApplicationController
           }
         end
       end
+      format.html do
+      end
     end
   end
 
@@ -26,6 +28,20 @@ class SchoolClassesController < ApplicationController
           teacher_name: @school_class.teacher.name,
           students: @school_class.students.pluck(:name)
         }
+      end
+      format.html do
+      end
+    end
+  end
+    def new
+    respond_to do |format|
+      format.html do
+      end
+    end
+    end
+  def edit
+    respond_to do |format|
+      format.html do
       end
     end
   end
