@@ -11,6 +11,8 @@ class RegistrationsController < ApplicationController
             point: r.point, booster: r.booster }
         end
       end
+      format.html do
+      end
     end
   end
 
@@ -26,6 +28,20 @@ class RegistrationsController < ApplicationController
           point: @registration.point,
           booster: @registration.booster
         }
+      end
+      format.html do
+      end
+    end
+  end
+  def new
+    respond_to do |format|
+      format.html do
+      end
+    end
+  end
+  def edit
+    respond_to do |format|
+      format.html do
       end
     end
   end
