@@ -10,6 +10,10 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
+    setup do
+      Rails.application.load_seed # loading seeds.rb
+    end
+
     # Add more helper methods to be used by all tests here...
   end
 end
