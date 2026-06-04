@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   get "/students", to: "students#index"
   get "/students/:id", to: "students#show"
   get "/testing_erb", to: "pages#erb"
+  resources :teachers, only: [ :index, :show ]
+  resources :school_classes, only: [ :index, :show ]
+  resources :students, only: [ :index, :show ]
+  resources :registrations, only: [ :index, :show ]
 end
