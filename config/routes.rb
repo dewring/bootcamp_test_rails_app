@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   resources :teachers, only: [ :index, :show ]
   resources :school_classes, only: [ :index, :show ]
   resources :students, only: [ :index, :show ]
-  resources :registrations, only: [ :index, :show ]
+  resources :registrations
 end
