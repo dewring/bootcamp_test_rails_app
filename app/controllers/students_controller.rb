@@ -14,7 +14,6 @@ class StudentsController < ApplicationController
       end
 
       format.html do
-        render(:index)
       end
     end
   end
