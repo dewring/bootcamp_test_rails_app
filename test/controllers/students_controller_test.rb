@@ -57,4 +57,21 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   assert @response.body.include?("GRADE:")
   assert @response.body.include?("TERM:")
   end
+  test "should create student with correct params" do
+    post "/students.json", params: { name: "shisha", grade: 5, term: "second" }, as: :json
+    assert_response 201
+
+    json = JSON.parse(@response.body)
+    assert_equal "shisha", json["name"]
+    assert_equal 5, json["grade"]
+    assert_equal "second", json["term"]
+  end
+  test "should create student with incorrect params" do
+    post "/students.json", params: { name: "shisha", grade: -5, term: "third" }, as: :json
+    assert_response 422
+
+    json = JSON.parse(@response.body)
+    puts json
+    assert_equal [ "Grade must be greater than 0", "Term is not included in the list" ], json["errors"]
+  end
 end

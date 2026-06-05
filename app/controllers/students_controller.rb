@@ -42,4 +42,21 @@ class StudentsController < ApplicationController
       end
     end
   end
+
+  def create
+    student = Student.create(student_params)
+    respond_to do |format|
+      format.json do
+        if student.valid?
+          render json: student.as_json, status: 201
+        else
+          render json: { errors: student.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+
+  def student_params
+    params.expect(student: [ :name, :grade, :term ])
+  end
 end
