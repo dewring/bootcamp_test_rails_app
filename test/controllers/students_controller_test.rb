@@ -43,8 +43,8 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(@response.body)
 
-    assert_equal [ "Being Cute" ], json["classes"]
-    assert_equal [ "Leika" ], json["teachers"]
+    assert_equal [ "being cute" ], json["classes"]
+    assert_equal [ "Jaina" ], json["teachers"]
   end
   test "show html displays student information" do
   student = Student.find_by(name: "Hachiware")
