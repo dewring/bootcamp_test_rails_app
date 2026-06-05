@@ -66,7 +66,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 5, json["grade"]
     assert_equal "second", json["term"]
   end
-  test "should create student with incorrect params" do
+  test "should not create student with incorrect params" do
     post "/students.json", params: { name: "shisha", grade: -5, term: "third" }, as: :json
     assert_response 422
 
