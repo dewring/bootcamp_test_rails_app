@@ -1,0 +1,32 @@
+<h1>Leika School</h1>
+
+<p>SUBJECT: <%= @school_class.subject %></p>
+
+<p>
+  TEACHER:
+  <%= @school_class.teacher.name %>
+</p>
+
+<h3>▼ STUDENTS</h3>
+
+<table border="1">
+  <tr>
+    <th>NAME</th>
+    <th>GRADE</th>
+    <th>TERM</th>
+  </tr>
+
+  <% @school_class.students.each do |student| %>
+    <tr>
+      <td><%= student.name %></td>
+      <td><%= student.grade %></td>
+      <td><%= student.term %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<a href="/school_classes">
+  Back to List
+</a>

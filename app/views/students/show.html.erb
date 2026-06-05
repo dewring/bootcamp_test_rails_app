@@ -1,6 +1,27 @@
 <!--app/views/students/show.html.erb-->
-<h1>Student</h1>
+<h1>Leika School</h1>
 
-<p><%= @student[:name] %></p>
-<h3>is babo</h3>
-<%= render "student", student: @student %>
+<p>NAME: <%= @student.name %></p>
+<p>GRADE: <%= @student.grade %></p>
+<p>TERM: <%= @student.term %></p>
+
+<h3>▼ GRADE</h3>
+<table border="1">
+  <tr>
+    <th>SUBJECT</th>
+    <th>POINTS EARNED</th>
+    <th>BOOSTER</th>
+    <th>TOTAL</th>
+  </tr>
+  <% @student.registrations.each do |registration| %>
+    <tr>
+      <td><%= registration.school_class.subject %></td>
+      <td><%= registration.point %></td>
+      <td><%= registration.booster %></td>
+      <td><%= registration.booster + registration.point %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+<a href="/students">Back to List</a>

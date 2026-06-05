@@ -1,8 +1,9 @@
 <!--app/views/students/index.html.erb-->
-<h1>Students</h1>
+<h1>Leika School</h1>
+<h2>students</h2>
 
-<ul>
-    <% @students.each do |student| %>
-        <%= render "student", student: student %>
-    <% end %>
-</ul>
+<% @students.each do |student| %>
+  <p>○ <a href="/students/<%= student.id %>"><%= student.name %></a></p>
+<% end %>
+
+<a href="/students/new">Go to Create Page</a>
