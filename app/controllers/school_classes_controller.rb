@@ -45,4 +45,19 @@ class SchoolClassesController < ApplicationController
       end
     end
   end
+  def create
+    school_class = SchoolClass.create(school_class_params)
+      respond_to do |format|
+       format.json do
+        if school_class.valid?
+          render json: school_class.as_json, status: 201
+        else
+          render json: { errors: school_class.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+  def school_class_params
+    params.expect(school_class: [ :subject, :teacher_id ])
+  end
 end

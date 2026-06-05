@@ -32,4 +32,25 @@ class SchoolClassesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Jaina", json["teacher_name"]
     assert_equal "Usagi", json["students"].last
   end
+
+  test "should create schoolclass with correct params" do
+    teacher = Teacher.create!(name: "choco")
+    post "/school_classes.json", params: {
+      subject: "being lazy",
+      teacher_id: teacher.id
+      }, as: :json
+    assert_response 201
+
+    json = JSON.parse(@response.body)
+    assert_equal "being lazy", json["subject"]
+    assert_equal teacher.id, json["teacher_id"]
+  end
+  test "should not create schoolclass with incorrect params" do
+    post "/school_classes.json", params: { subject: "", teacher_id: "" }, as: :json
+    assert_response 422
+
+    json = JSON.parse(@response.body)
+    assert_includes json["errors"], "Subject can't be blank"
+    assert_includes json["errors"], "Teacher must exist"
+  end
 end
