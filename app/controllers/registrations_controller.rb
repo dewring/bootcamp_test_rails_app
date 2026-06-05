@@ -45,4 +45,19 @@ class RegistrationsController < ApplicationController
       end
     end
   end
+  def create
+    registration = Registration.create(registration_params)
+      respond_to do |format|
+       format.json do
+        if registration.valid?
+          render json: registration.as_json, status: 201
+        else
+          render json: { errors: registration.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+  def registration_params
+    params.expect(registration: [ :student_id, :school_class_id, :point, :booster ])
+  end
 end
