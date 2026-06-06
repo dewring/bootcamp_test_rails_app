@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index ]
   # GET /students
   def index
     @students = Student.all

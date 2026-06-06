@@ -17,6 +17,10 @@ body {
   padding-bottom: 10px;
   border-bottom: 2px solid #333;
   margin-bottom: 20px;
+
+  display: flex;                      /* children go side by side */
+  justify-content: space-between;    /* title far left, nav far right */
+  align-items: center;               /* vertically center both sides */
 }
 
 /* 영어: Input wrappers for alignment */
