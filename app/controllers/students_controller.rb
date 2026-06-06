@@ -37,6 +37,7 @@ class StudentsController < ApplicationController
     end
   end
   def new
+    @student = Student.new
     respond_to do |format|
       format.html do
       end
@@ -44,13 +45,21 @@ class StudentsController < ApplicationController
   end
 
   def create
-    student = Student.create(student_params)
+    @student = Student.new(student_params)
     respond_to do |format|
-      format.json do
-        if student.valid?
-          render json: student.as_json, status: 201
+      format.html do
+        if @student.save
+          redirect_to students_path
         else
-          render json: { errors: student.errors.full_messages }, status: 422
+          render :new, status: :unprocessable_entity
+        end
+      end
+
+      format.json do
+        if @student.valid?
+          render json: @student.as_json, status: 201
+        else
+          render json: { errors: @student.errors.full_messages }, status: 422
         end
       end
     end
