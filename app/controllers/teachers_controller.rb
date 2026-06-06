@@ -41,6 +41,7 @@ class TeachersController < ApplicationController
     end
   end
   def edit
+    @teacher = Teacher.find(params[:id])
     respond_to do |format|
       format.html do
       end
@@ -65,6 +66,15 @@ class TeachersController < ApplicationController
           render json: { errors: @teacher.errors.full_messages }, status: 422
         end
       end
+    end
+  end
+  def update
+    @teacher = Teacher.find(params[:id])
+
+    if @teacher.update(teacher_params)
+      redirect_to teacher_path(@teacher)
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
   def teacher_params

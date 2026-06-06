@@ -1,10 +1,18 @@
-<h1>Leika School</h1>
-<h2>teachers</h2>
+<% content_for :title, "Teachers" %>
 
-<% @teachers.each do |teacher| %>
-  <p>
-    ○ <a href="/teachers/<%= teacher.id %>">
-      <%= teacher.name %>
-    </a>
-  </p>
-<% end %>
+<div class="school-header">
+  Leika School
+</div>
+
+<h1>Teachers List</h1>
+
+<div id="teachers">
+  <% @teachers.each do |teacher| %>
+    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+      ○ <%= link_to teacher.name, teacher_path(teacher) %>
+    </p>
+  <% end %>
+</div>
+
+<br>
+<%= link_to "Go to Create Page", new_teacher_path, class: "wireframe-btn" %>

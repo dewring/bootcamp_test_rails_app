@@ -1,18 +1,28 @@
-<h1>Leika School</h1>
+<% content_for :title, "Editing Teacher" %>
 
-<p>NAME: <%= @teacher.name %></p>
+<div class="school-header">
+  Leika School
+</div>
 
-<h3>EDIT TEACHER</h3>
+<h1>Editing Teacher</h1>
 
-<p>
-  NAME:
-  <input type="text" value="<%= @teacher.name %>">
-</p>
+<%= form_with(model: @teacher) do |form| %>
 
-<button>SAVE</button>
+  <div class="form-group">
+    <%= form.label :name, "NAME" %>
+    <%= form.text_field :name, class: "form-input" %>
+  </div>
 
-<br><br>
+  <br>
 
-<a href="/teachers/<%= @teacher.id %>">
-  Back to Teacher
-</a>
+  <div style="text-align: right; width: 380px;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
+  </div>
+
+<% end %>
+
+<br>
+<hr>
+<div>
+  <%= link_to "Back to Teacher", @teacher, class: "wireframe-btn" %>
+</div>

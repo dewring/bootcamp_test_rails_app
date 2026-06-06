@@ -1,37 +1,37 @@
 <% content_for :title, "New Teacher" %>
 
-<h2>Leika School</h2>
-<hr>
+<div class="school-header">
+  Leika School
+</div>
 
 <h1>New Teacher</h1>
 
 <%= form_with(model: @teacher) do |form| %>
   
   <div>
-    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px;">
+    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px; margin-bottom: 10px;">
       O
     </div>
-    
     <%= form.file_field :avatar, id: "teacher_avatar_input" %>
-    <button type="button" onclick="clearFileInput()">DELETE</button>
+    <button type="button" class="wireframe-btn" onclick="clearFileInput()">DELETE</button>
   </div>
 
   <br>
 
-  <div>
+  <div class="form-group">
     <%= form.label :name, "NAME" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "form-input" %>
   </div>
 
-  <div>
+  <div class="form-group">
     <label>ID</label>
-    <input type="text" placeholder="XXXX" disabled>
+    <input type="text" class="form-input" placeholder="XXXX" disabled>
   </div>
 
   <br>
 
-  <div>
-    <%= form.submit "SAVE" %>
+  <div style="text-align: right; width: 380px;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
 
 <% end %>
@@ -44,11 +44,8 @@
 
 <script>
   function clearFileInput() {
-    // Find the input element using the ID we created
     const fileInput = document.getElementById('teacher_avatar_input');
-    
     if (fileInput) {
-      //Clear the file selection by setting value to empty
       fileInput.value = "";
     }
   }
