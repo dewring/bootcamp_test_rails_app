@@ -1,9 +1,18 @@
-<!--app/views/students/index.html.erb-->
-<h1>Leika School</h1>
-<h2>students</h2>
+<% content_for :title, "Students" %>
 
-<% @students.each do |student| %>
-  <p>○ <a href="/students/<%= student.id %>"><%= student.name %></a></p>
-<% end %>
+<div class="school-header">
+  Leika School
+</div>
 
-<a href="/students/new">Go to Create Page</a>
+<h1>Students List</h1>
+
+<div id="students">
+  <% @students.each do |student| %>
+    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+      ○ <%= link_to student.name, student_path(student) %>
+    </p>
+  <% end %>
+</div>
+
+<br>
+<%= link_to "Go to Create Page", new_student_path, class: "wireframe-btn" %>

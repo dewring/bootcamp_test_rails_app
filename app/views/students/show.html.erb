@@ -1,27 +1,47 @@
-<!--app/views/students/show.html.erb-->
-<h1>Leika School</h1>
+<% content_for :title, "Student Details" %>
 
-<p>NAME: <%= @student.name %></p>
-<p>GRADE: <%= @student.grade %></p>
-<p>TERM: <%= @student.term %></p>
+<div class="school-header">
+  Leika School
+</div>
+
+<div style="margin-bottom: 30px;">
+  <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px; float: left; margin-right: 20px;">
+    O
+  </div>
+  
+  <div style="padding-top: 10px;">
+    <p><strong>NAME:</strong> <%= @student.name %></p>
+    <p><strong>GRADE:</strong> <%= @student.grade %></p>
+    <p><strong>TERM:</strong> <%= @student.term %></p>
+  </div>
+</div>
+
+<div style="clear: both;"></div>
 
 <h3>▼ GRADE</h3>
-<table border="1">
-  <tr>
-    <th>SUBJECT</th>
-    <th>POINTS EARNED</th>
-    <th>BOOSTER</th>
-    <th>TOTAL</th>
-  </tr>
-  <% @student.registrations.each do |registration| %>
+<table style="width: 100%; border-collapse: collapse; text-align: center;" border="1" cellpadding="8">
+  <thead style="background-color: #f2f2f2;">
     <tr>
-      <td><%= registration.school_class.subject %></td>
-      <td><%= registration.point %></td>
-      <td><%= registration.booster %></td>
-      <td><%= registration.booster + registration.point %></td>
+      <th>SUBJECT</th>
+      <th>POINTS EARNED</th>
+      <th>BOOSTER</th>
+      <th>TOTAL POINTS</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @student.registrations.each do |registration| %>
+      <tr>
+        <td><%= registration.school_class.subject %></td>
+        <td><%= registration.point %></td>
+        <td><%= registration.booster %></td>
+        <td><%= registration.point + registration.booster %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br>
-<a href="/students">Back to List</a>
+<br><br>
+<hr>
+<div>
+  <%= link_to "Back to List", students_path, class: "wireframe-btn" %>
+</div>

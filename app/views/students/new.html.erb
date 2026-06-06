@@ -1,46 +1,47 @@
 <% content_for :title, "New Student" %>
 
-<h2>Leika School</h2>
-<hr>
+<div class="school-header">
+  Leika School
+</div>
 
 <h1>Create Student</h1>
 
 <%= form_with(model: @student) do |form| %>
   
   <div>
-    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px;">
+    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px; margin-bottom: 10px;">
       O
     </div>
     <%= form.file_field :avatar, id: "student_avatar_input" %>
-    <button type="button" onclick="clearStudentFileInput()">DELETE</button>
+    <button type="button" class="wireframe-btn" onclick="clearStudentFileInput()">DELETE</button>
   </div>
 
   <br>
 
-  <div>
+  <div class="form-group">
     <%= form.label :name, "NAME" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class: "form-input" %>
   </div>
 
-  <div>
+  <div class="form-group">
     <label>ID</label>
-    <input type="text" placeholder="XXXX" disabled>
+    <input type="text" class="form-input" placeholder="XXXX" disabled>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= form.label :grade, "GRADE" %>
-    <%= form.text_field :grade, placeholder: "XXXX" %>
+    <%= form.text_field :grade, class: "form-input", placeholder: "XXXX" %>
   </div>
 
-  <div>
+  <div class="form-group">
     <%= form.label :term, "TERM" %>
-    <%= form.text_field :term, placeholder: "XXXX" %>
+    <%= form.text_field :term, class: "form-input", placeholder: "XXXX" %>
   </div>
 
   <br>
 
-  <div>
-    <%= form.submit "SAVE" %>
+  <div style="text-align: right; width: 380px;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
 
 <% end %>
