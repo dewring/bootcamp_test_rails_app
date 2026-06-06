@@ -1,7 +1,8 @@
 <% content_for :title, "Registrations" %>
 
-<h2>Leika School</h2>
-<hr>
+<div class="school-header">
+  Leika School
+</div>
 
 <h1>Registrations List</h1>
 
@@ -12,12 +13,12 @@
       <br>
       POINT: <%= registration.point %> | BOOSTER: <%= registration.booster %>
       
-      <br>
-      <%= link_to "View Details", registration %> | 
-      <%= link_to "Edit", edit_registration_path(registration) %>
+      <br><br>
+      <%= link_to "View Details", registration, class: "wireframe-btn", style: "font-size: 11px; padding: 4px 8px;" %> | 
+      <%= link_to "Edit", edit_registration_path(registration), class: "wireframe-btn", style: "font-size: 11px; padding: 4px 8px;" %>
     </p>
   <% end %>
 </div>
 
 <br>
-<%= link_to "New registration", new_registration_path %>
+<%= link_to "New registration", new_registration_path, class: "wireframe-btn" %>

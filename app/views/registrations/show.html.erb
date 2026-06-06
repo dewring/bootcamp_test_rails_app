@@ -1,10 +1,15 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @registration %>
+<div class="school-header">
+  Leika School
+</div>
 
-<div>
-  <%= link_to "Edit this registration", edit_registration_path(@registration) %> |
-  <%= link_to "Back to registrations", registrations_path %>
+<div style="margin-bottom: 30px; padding: 10px; background-color: #fafafa; border: 1px dashed #bbb;">
+  <%= render @registration %>
+</div>
 
-  <%= button_to "Destroy this registration", @registration, method: :delete %>
+<div style="display: flex; gap: 10px; align-items: center;">
+  <%= link_to "Edit this registration", edit_registration_path(@registration), class: "wireframe-btn" %> 
+  <%= link_to "Back to registrations", registrations_path, class: "wireframe-btn" %>
+  <%= button_to "Destroy this registration", @registration, method: :delete, class: "wireframe-btn", style: "background-color: #fff; color: red; border-color: red;" %>
 </div>
