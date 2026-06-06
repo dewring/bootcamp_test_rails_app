@@ -1,32 +1,37 @@
-<h1>Leika School</h1>
+<% content_for :title, "Class Details" %>
 
-<p>SUBJECT: <%= @school_class.subject %></p>
+<div class="school-header">
+  Leika School
+</div>
 
-<p>
-  TEACHER:
-  <%= @school_class.teacher.name %>
-</p>
+<div style="margin-bottom: 20px;">
+  <p><strong>SUBJECT:</strong> <%= @school_class.subject %></p>
+  <p><strong>TEACHER:</strong> <%= @school_class.teacher.name %></p>
+</div>
 
 <h3>▼ STUDENTS</h3>
-
-<table border="1">
-  <tr>
-    <th>NAME</th>
-    <th>GRADE</th>
-    <th>TERM</th>
-  </tr>
-
-  <% @school_class.students.each do |student| %>
+<table style="width: 100%; border-collapse: collapse; text-align: center;" border="1" cellpadding="8">
+  <thead style="background-color: #f2f2f2;">
     <tr>
-      <td><%= student.name %></td>
-      <td><%= student.grade %></td>
-      <td><%= student.term %></td>
+      <th>NAME</th>
+      <th>GRADE</th>
+      <th>TERM</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <td><%= student.grade %></td>
+        <td><%= student.term %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br>
-
-<a href="/school_classes">
-  Back to List
-</a>
+<br><br>
+<hr>
+<div>
+  <%= link_to "Edit Class", edit_school_class_path(@school_class), class: "wireframe-btn" %> |
+  <%= link_to "Back to List", school_classes_path, class: "wireframe-btn" %>
+</div>

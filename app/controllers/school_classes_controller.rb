@@ -41,6 +41,7 @@ class SchoolClassesController < ApplicationController
       end
     end
   def edit
+    @school_class = SchoolClass.find(params[:id])
     respond_to do |format|
       format.html do
       end
@@ -67,6 +68,14 @@ class SchoolClassesController < ApplicationController
           render json: { errors: @school_class.errors.full_messages }, status: 422
         end
       end
+    end
+  end
+  def update
+    @school_class = SchoolClass.find(params[:id])
+    if @school_class.update(school_class_params)
+      redirect_to school_class_path(@school_class)
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
   def school_class_params

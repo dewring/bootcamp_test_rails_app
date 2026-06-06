@@ -1,10 +1,18 @@
-<h1>Leika School</h1>
-<h2>classes</h2>
+<% content_for :title, "Classes" %>
 
-<% @school_classes.each do |school_class| %>
-  <p>
-    ○ <a href="/school_classes/<%= school_class.id %>">
-      <%= school_class.subject %>
-    </a>
-  </p>
-<% end %>
+<div class="school-header">
+  Leika School
+</div>
+
+<h1>Classes List</h1>
+
+<div id="school_classes">
+  <% @school_classes.each do |school_class| %>
+    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+      ○ <%= link_to school_class.subject, school_class_path(school_class) %>
+    </p>
+  <% end %>
+</div>
+
+<br>
+<%= link_to "Go to Create Page", new_school_class_path, class: "wireframe-btn" %>
