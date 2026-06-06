@@ -1,10 +1,61 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* app/assets/stylesheets/application.css 맨 밑에 추가 */
+
+/* 영어: Global resets for font and clean layouts */
+/* 한국어: 전체적인 서체와 깔끔한 레이아웃을 위한 기본 설정 */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+/* 영어: Top navigation header style from your mockup */
+/* 한국어: 와이어프레임 시안 상단의 Leika School 헤더 스타일 */
+.school-header {
+  font-size: 24px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #333;
+  margin-bottom: 20px;
+}
+
+/* 영어: Input wrappers for alignment */
+/* 한국어: 정렬을 위한 입력창 그룹 컨테이너 */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: inline-block;
+  width: 120px;
+  font-weight: bold;
+}
+
+/* 영어: Gray background inputs from create_students mockup */
+/* 한국어: create_students 시안에 등장하는 회색 배경의 입력창 스타일 */
+.form-input {
+  background-color: #E0E0E0;
+  border: 1px solid #999;
+  padding: 6px 12px;
+  width: 250px;
+  font-size: 14px;
+  color: #000000 !important;
+}
+
+/* 영어: Clean block buttons used for EDIT / SAVE / UPDATE */
+/* 한국어: EDIT / SAVE / UPDATE에 공통으로 쓰이는 미니멀한 사각형 버튼 스타일 */
+.wireframe-btn {
+  background-color: white;
+  color: black;
+  border: 2px solid #333;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.wireframe-btn:hover {
+  background-color: #333;
+  color: white;
+}
