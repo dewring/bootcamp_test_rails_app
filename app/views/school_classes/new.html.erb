@@ -1,11 +1,34 @@
-<% content_for :title, "New school class" %>
+<% content_for :title, "New School Class" %>
 
-<h1>New school class</h1>
+<h2>Leika School</h2>
+<hr>
 
-<%= render "form", school_class: @school_class %>
+<h1>Create School Class</h1>
+
+<%= form_with(model: @school_class) do |form| %>
+
+  <div>
+    <%= form.label :subject, "SUBJECT" %>
+    <%= form.text_field :subject, placeholder: "e.g., Math, Science" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :teacher_id, "TEACHER" %>
+    <%= form.collection_select :teacher_id, Teacher.all, :id, :name, prompt: "Select a Teacher" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.submit "SAVE" %>
+  </div>
+
+<% end %>
 
 <br>
-
+<hr>
 <div>
   <%= link_to "Back to school classes", school_classes_path %>
 </div>
