@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   resources :student_registrations, controller: "registrations"
 
   root to: "students#index"
+  namespace :api do
+    get "/me", to: "me#show"
+  end
 end
