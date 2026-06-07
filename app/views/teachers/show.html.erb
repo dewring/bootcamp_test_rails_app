@@ -1,12 +1,14 @@
 <% content_for :title, "Teacher Details" %>
 
-<div style="margin-bottom: 20px;">
-  <p><strong>NAME:</strong> <%= @teacher.name %></p>
+<div class="info-block" style="margin-bottom: 24px;">
+  <p><strong>NAME</strong> <%= @teacher.name %></p>
+  <p><strong>ID</strong> <%= @teacher.id %></p>
 </div>
 
-<h3>▼ CLASSES</h3>
-<table style="width: 100%; border-collapse: collapse; text-align: center;" border="1" cellpadding="8">
-  <thead style="background-color: #f2f2f2;">
+<h3 class="grade-toggle">▼ CLASSES</h3>
+
+<table class="grade-table">
+  <thead>
     <tr>
       <th>SUBJECT</th>
     </tr>
@@ -20,9 +22,9 @@
   </tbody>
 </table>
 
-<br><br>
-<hr>
-<div>
-  <%= link_to "Edit Teacher", edit_teacher_path(@teacher), class: "wireframe-btn" %> |
-  <%= link_to "Back to List", teachers_path, class: "wireframe-btn" %>
+<br>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_teacher_path(@teacher), class: "wireframe-btn" %>
+  <% end %>
 </div>

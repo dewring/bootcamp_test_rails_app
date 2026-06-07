@@ -1,4 +1,6 @@
 class TeachersController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+  skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
   def index
     @teachers = Teacher.all
 
@@ -77,6 +79,13 @@ class TeachersController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    @teacher = Teacher.find(params[:id])
+    @teacher.destroy
+    redirect_to teachers_path
+  end
+
   def teacher_params
     params.expect(teacher: [ :name ])
   end
