@@ -1,29 +1,24 @@
 <% content_for :title, "New Class" %>
 
-<h1>New School Class</h1>
-
 <%= form_with(model: @school_class) do |form| %>
-  
-  <div class="form-group">
-    <%= form.label :subject, "SUBJECT" %>
-    <%= form.text_field :subject, class: "form-input", placeholder: "e.g. Math, Art" %>
+  <div class="field-row">
+    <span class="field-label">SUBJECT</span>
+    <%= form.text_field :subject, class: "field-input" %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :teacher_id, "TEACHER" %>
-    <%= form.collection_select :teacher_id, Teacher.all, :id, :name, { prompt: "Select Teacher" }, { class: "form-input" } %>
+  <div class="field-row">
+    <span class="field-label">TEACHER</span>
+    <%= form.collection_select :teacher_id, Teacher.all, :id, :name,
+        { prompt: "Select" }, { class: "field-input" } %>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">ID</span>
+    <input type="text" class="field-input" placeholder="auto" disabled>
   </div>
 
   <br>
-
-  <div style="text-align: right; width: 380px;">
+  <div style="text-align: right;">
     <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
-
 <% end %>
-
-<br>
-<hr>
-<div>
-  <%= link_to "Back to classes", school_classes_path %>
-</div>

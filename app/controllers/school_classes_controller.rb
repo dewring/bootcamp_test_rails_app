@@ -1,4 +1,7 @@
 class SchoolClassesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+  skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
+
   def index
     @school_classes = SchoolClass.all
 
@@ -78,6 +81,13 @@ class SchoolClassesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    @school_class = SchoolClass.find(params[:id])
+    @school_class.destroy
+    redirect_to school_classes_path
+  end
+
   def school_class_params
     params.expect(school_class: [ :subject, :teacher_id ])
   end
