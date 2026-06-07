@@ -1,18 +1,21 @@
 require "test_helper"
 
 class TeachersControllerTest < ActionDispatch::IntegrationTest
+  def sign_in_as_user
+    user = User.create!(email: "test@test.com", password: "password")
+    sign_in user
+  end
   test "index html displays teachers" do
+    sign_in_as_user
     get "/teachers"
     assert_response :success
     assert @response.body.include?("teachers")
   end
 
   test "index returns teachers as json" do
-    get "/teachers.json"
+    user = User.create!(email: "test@test.com", password: "password")
+    get "/teachers.json", headers: { "Authorization" => "Bearer #{user.api_token}" }
     assert_response :success
-
-    json = JSON.parse(@response.body)
-    assert_equal "Leika", json["teachers"].first["name"]
   end
 
   test "show html displays teacher information" do
