@@ -2,6 +2,9 @@ Registration.destroy_all
 Student.destroy_all
 SchoolClass.destroy_all
 Teacher.destroy_all
+User.destroy_all
+
+user1 = User.create!(email: "leika@example.com", password: "leikaka")
 
 teacher1 = Teacher.create!(name: "Leika")
 teacher2 = Teacher.create!(name: "Jaina")
