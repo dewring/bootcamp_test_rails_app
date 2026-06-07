@@ -1,8 +1,7 @@
 <%= form_with(model: teacher) do |form| %>
   <% if teacher.errors.any? %>
-    <div style="color: red">
+    <div style="color: red;">
       <h2><%= pluralize(teacher.errors.count, "error") %> prohibited this teacher from being saved:</h2>
-
       <ul>
         <% teacher.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,6 +11,38 @@
   <% end %>
 
   <div>
-    <%= form.submit %>
+    <div style="width: 100px; height: 100px; border: 1px solid black; border-radius: 50%; text-align: center; line-height: 100px;">
+      Image
+    </div>
+    <%= form.label :avatar, "UPLOAD" %>
+    <button type="button">DELETE</button>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :name, "NAME" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <label>ID</label>
+    <input type="text" name="teacher[teacher_id_number]" disabled placeholder="XXXX">
+  </div>
+
+  <div>
+    <label>GRADE</label>
+    <input type="text" name="teacher[grade]" placeholder="XXXX">
+  </div>
+
+  <div>
+    <label>TERM</label>
+    <input type="text" name="teacher[term]" placeholder="XXXX">
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.submit "SAVE" %>
   </div>
 <% end %>

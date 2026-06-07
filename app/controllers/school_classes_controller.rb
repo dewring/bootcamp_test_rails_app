@@ -34,15 +34,42 @@ class SchoolClassesController < ApplicationController
     end
   end
     def new
-    respond_to do |format|
-      format.html do
+     @school_class = SchoolClass.new
+      respond_to do |format|
+        format.html do
+        end
       end
-    end
     end
   def edit
     respond_to do |format|
       format.html do
       end
     end
+  end
+  def create
+    @school_class = SchoolClass.new(school_class_params)
+      respond_to do |format|
+        format.html do
+          # @school_class.save와  @school_class.valid?의 차이점은
+          # valid?는 유효검사만 하고 직접 저장하지 않고 save는 직접 저장한다
+          # 제이드한테 왜 valid?를 넣었었는지 묻기
+          if @school_class.save
+            redirect_to school_classes_path
+          else
+            render :new, status: :unprocessable_entity
+          end
+        end
+
+       format.json do
+        if @school_class.save
+          render json: @school_class.as_json, status: 201
+        else
+          render json: { errors: @school_class.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+  def school_class_params
+    params.expect(school_class: [ :subject, :teacher_id ])
   end
 end

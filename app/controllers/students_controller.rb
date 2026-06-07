@@ -37,9 +37,35 @@ class StudentsController < ApplicationController
     end
   end
   def new
+    @student = Student.new
     respond_to do |format|
       format.html do
       end
     end
+  end
+
+  def create
+    @student = Student.new(student_params)
+    respond_to do |format|
+      format.html do
+        if @student.save
+          redirect_to students_path
+        else
+          render :new, status: :unprocessable_entity
+        end
+      end
+
+      format.json do
+        if @student.valid?
+          render json: @student.as_json, status: 201
+        else
+          render json: { errors: @student.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+
+  def student_params
+    params.expect(student: [ :name, :grade, :term ])
   end
 end

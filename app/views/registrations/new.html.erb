@@ -1,11 +1,48 @@
-<% content_for :title, "New registration" %>
+<% content_for :title, "New Registration" %>
 
-<h1>New registration</h1>
+<h2>Leika School</h2>
+<hr>
 
-<%= render "form", registration: @registration %>
+<h1>Create Registration</h1>
+
+<%= form_with(model: @registration) do |form| %>
+
+  <div>
+    <%= form.label :student_id, "STUDENT" %>
+    <%= form.collection_select :student_id, Student.all, :id, :name, prompt: "Select a Student" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :school_class_id, "SCHOOL CLASS" %>
+    <%= form.collection_select :school_class_id, SchoolClass.all, :id, :subject, prompt: "Select a Class" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :point, "POINT" %>
+    <%= form.number_field :point, min: 1, max: 100, placeholder: "1-100" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :booster, "BOOSTER" %>
+    <%= form.number_field :booster, min: 1, max: 100, placeholder: "1-100" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.submit "SAVE REGISTRATION" %>
+  </div>
+
+<% end %>
 
 <br>
-
+<hr>
 <div>
   <%= link_to "Back to registrations", registrations_path %>
 </div>

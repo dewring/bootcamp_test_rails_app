@@ -1,16 +1,23 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Registrations" %>
 
-<h1>Registrations</h1>
+<h2>Leika School</h2>
+<hr>
+
+<h1>Registrations List</h1>
 
 <div id="registrations">
   <% @registrations.each do |registration| %>
-    <%= render registration %>
-    <p>
-      <%= link_to "Show this registration", registration %>
+    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+      <strong><%= registration.student&.name %></strong> - <%= registration.school_class&.subject %> 
+      <br>
+      POINT: <%= registration.point %> | BOOSTER: <%= registration.booster %>
+      
+      <br>
+      <%= link_to "View Details", registration %> | 
+      <%= link_to "Edit", edit_registration_path(registration) %>
     </p>
   <% end %>
 </div>
 
+<br>
 <%= link_to "New registration", new_registration_path %>

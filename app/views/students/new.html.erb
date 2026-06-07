@@ -1,11 +1,61 @@
-<h1>Leika School</h1>
+<% content_for :title, "New Student" %>
 
-<p>○ [UPLOAD] [DELETE]</p>
+<h2>Leika School</h2>
+<hr>
 
-<p>NAME: <input type="text"></p>
-<p>GRADE: <input type="text"></p>
-<p>TERM: <input type="text"></p>
+<h1>Create Student</h1>
 
-<button>SAVE</button>
-<br><br>
-<a href="/students">Back to List</a>
+<%= form_with(model: @student) do |form| %>
+  
+  <div>
+    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px;">
+      O
+    </div>
+    <%= form.file_field :avatar, id: "student_avatar_input" %>
+    <button type="button" onclick="clearStudentFileInput()">DELETE</button>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :name, "NAME" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <label>ID</label>
+    <input type="text" placeholder="XXXX" disabled>
+  </div>
+
+  <div>
+    <%= form.label :grade, "GRADE" %>
+    <%= form.text_field :grade, placeholder: "XXXX" %>
+  </div>
+
+  <div>
+    <%= form.label :term, "TERM" %>
+    <%= form.text_field :term, placeholder: "XXXX" %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.submit "SAVE" %>
+  </div>
+
+<% end %>
+
+<br>
+<hr>
+<div>
+  <%= link_to "Back to students", students_path %>
+</div>
+
+<script>
+  function clearStudentFileInput() {
+    const fileInput = document.getElementById('student_avatar_input');
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  }
+</script>

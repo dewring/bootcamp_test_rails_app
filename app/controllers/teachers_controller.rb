@@ -34,6 +34,7 @@ class TeachersController < ApplicationController
     end
   end
   def new
+      @teacher = Teacher.new
     respond_to do |format|
       format.html do
       end
@@ -44,5 +45,29 @@ class TeachersController < ApplicationController
       format.html do
       end
     end
+  end
+  def create
+    @teacher = Teacher.new(teacher_params)
+
+    respond_to do |format|
+      format.html do
+        if @teacher.save
+          redirect_to teachers_path
+        else
+          render :new, status: :unprocessable_entity
+        end
+      end
+
+      format.json do
+        if @teacher.valid?
+          render json: @teacher.as_json, status: 201
+        else
+          render json: { errors: @teacher.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+  def teacher_params
+    params.expect(teacher: [ :name ])
   end
 end
