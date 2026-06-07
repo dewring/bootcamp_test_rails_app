@@ -1,7 +1,11 @@
 class RegistrationsController < ApplicationController
   def index
-    @registrations = Registration.all
-
+    if params[:school_class_id].present?
+      @registrations = Registration.where(school_class_id: params[:school_class_id])
+    else
+      @registrations = Registration.all
+    end
+    @school_classes = SchoolClass.all
     respond_to do |format|
       format.json do
         render json: @registrations.map do |r|
@@ -54,7 +58,7 @@ class RegistrationsController < ApplicationController
       respond_to do |format|
       format.html do
         if @registration.save
-          redirect_to registrations_path
+          redirect_to student_registrations_path
         else
           render :new, status: :unprocessable_entity
         end
@@ -75,7 +79,7 @@ class RegistrationsController < ApplicationController
     respond_to do |format|
       format.html do
         if @registration.update(registration_params)
-          redirect_to registrations_path
+          redirect_to student_registrations_path
         else
           render :edit, status: :unprocessable_entity
         end
@@ -89,6 +93,12 @@ class RegistrationsController < ApplicationController
         end
       end
     end
+  end
+
+  def destroy
+    @registration = Registration.find(params[:id])
+    @registration.destroy
+    redirect_to student_registrations_path
   end
 
   def registration_params

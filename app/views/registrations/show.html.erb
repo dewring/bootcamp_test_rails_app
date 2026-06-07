@@ -1,11 +1,30 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Registration Details" %>
 
-<div style="margin-bottom: 30px; padding: 10px; background-color: #fafafa; border: 1px dashed #bbb;">
-  <%= render @registration %>
+<div class="info-block" style="margin-bottom: 24px;">
+  <p><strong>STUDENT</strong> <%= @registration.student.name %></p>
+  <p><strong>SUBJECT</strong> <%= @registration.school_class.subject %></p>
 </div>
 
-<div style="display: flex; gap: 10px; align-items: center;">
-  <%= link_to "Edit this registration", edit_registration_path(@registration), class: "wireframe-btn" %> 
-  <%= link_to "Back to registrations", registrations_path, class: "wireframe-btn" %>
-  <%= button_to "Destroy this registration", @registration, method: :delete, class: "wireframe-btn", style: "background-color: #fff; color: red; border-color: red;" %>
+<table class="grade-table">
+  <thead>
+    <tr>
+      <th>POINT</th>
+      <th>BOOSTER</th>
+      <th>TOTAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @registration.point %></td>
+      <td><%= @registration.booster %></td>
+      <td><%= @registration.point + @registration.booster %></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_student_registration_path(@registration), class: "wireframe-btn" %>
+  <% end %>
 </div>
