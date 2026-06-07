@@ -1,21 +1,23 @@
 <% content_for :title, "Student Details" %>
-<div style="margin-bottom: 30px;">
-  <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px; float: left; margin-right: 20px;">
-    O
+
+<div class="student-profile">
+  <div class="student-avatar large">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="#333" stroke-width="3"/>
+      <line x1="15" y1="15" x2="85" y2="85" stroke="#333" stroke-width="3"/>
+      <line x1="85" y1="15" x2="15" y2="85" stroke="#333" stroke-width="3"/>
+    </svg>
   </div>
-  
-  <div style="padding-top: 10px;">
-    <p><strong>NAME:</strong> <%= @student.name %></p>
-    <p><strong>GRADE:</strong> <%= @student.grade %></p>
-    <p><strong>TERM:</strong> <%= @student.term %></p>
+  <div class="info-block">
+    <p><strong>NAME</strong> <%= @student.name %></p>
+    <p><strong>ID</strong> <%= @student.id %></p>
+    <p><strong>GRADE</strong> <%= @student.grade %></p>
+    <p><strong>TERM</strong> <%= @student.term %></p>
   </div>
 </div>
-
-<div style="clear: both;"></div>
-
-<h3>▼ GRADE</h3>
-<table style="width: 100%; border-collapse: collapse; text-align: center;" border="1" cellpadding="8">
-  <thead style="background-color: #f2f2f2;">
+<h3 class="grade-toggle">▼ GRADE</h3>
+<table class="grade-table">
+  <thead>
     <tr>
       <th>SUBJECT</th>
       <th>POINTS EARNED</th>
@@ -34,9 +36,9 @@
     <% end %>
   </tbody>
 </table>
-
-<br><br>
-<hr>
-<div>
-  <%= link_to "Back to List", students_path, class: "wireframe-btn" %>
+<br>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_student_path(@student), class: "wireframe-btn" %>
+  <% end %>
 </div>

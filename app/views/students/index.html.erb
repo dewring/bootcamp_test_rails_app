@@ -1,14 +1,25 @@
 <% content_for :title, "Students" %>
 
-<h1>Students List</h1>
+<h2 style="text-align: center; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 20px;">
+  students
+</h2>
 
-<div id="students">
+<div class="student-grid">
   <% @students.each do |student| %>
-    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
-      ○ <%= link_to student.name, student_path(student) %>
-    </p>
+    <%= link_to student_path(student), class: "student-card" do %>
+      <div class="student-avatar">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="#333" stroke-width="3"/>
+          <line x1="15" y1="15" x2="85" y2="85" stroke="#333" stroke-width="3"/>
+          <line x1="85" y1="15" x2="15" y2="85" stroke="#333" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="student-name"><%= student.name %></div>
+    <% end %>
   <% end %>
 </div>
 
 <br>
-<%= link_to "Go to Create Page", new_student_path, class: "wireframe-btn" %>
+<div style="text-align: center;">
+  <%= link_to "New", new_student_path, class: "wireframe-btn" %>
+</div>

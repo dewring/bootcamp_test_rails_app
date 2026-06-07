@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :index ]
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+  skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
   # GET /students
   def index
     @students = Student.all
@@ -64,6 +65,39 @@ class StudentsController < ApplicationController
         end
       end
     end
+  end
+  def edit
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.html do
+      end
+    end
+  end
+
+  def update
+    @student = Student.find(params[:id])
+    respond_to do |format|
+      format.html do
+        if @student.update(student_params)
+          redirect_to student_path(@student)
+        else
+          render :edit, status: :unprocessable_entity
+        end
+      end
+      format.json do
+        if @student.update(student_params)
+          render json: @student.as_json, status: 200
+        else
+          render json: { errors: @student.errors.full_messages }, status: 422
+        end
+      end
+    end
+  end
+
+  def destroy
+    @student = Student.find(params[:id])
+    @student.destroy
+    redirect_to students_path
   end
 
   def student_params

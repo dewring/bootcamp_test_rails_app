@@ -1,58 +1,50 @@
 <% content_for :title, "New Student" %>
 
-<h1>Create Student</h1>
-
 <%= form_with(model: @student) do |form| %>
-  
-  <div>
-    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px; margin-bottom: 10px;">
-      O
+  <div class="avatar-wrap">
+    <div class="avatar-circle">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#333" stroke-width="3"/>
+        <line x1="15" y1="15" x2="85" y2="85" stroke="#333" stroke-width="3"/>
+        <line x1="85" y1="15" x2="15" y2="85" stroke="#333" stroke-width="3"/>
+      </svg>
     </div>
-    <%= form.file_field :avatar, id: "student_avatar_input" %>
-    <button type="button" class="wireframe-btn" onclick="clearStudentFileInput()">DELETE</button>
+    <div class="avatar-actions">
+      <label for="student_avatar_input" class="wireframe-btn" style="cursor: pointer;">UPLOAD</label>
+      <%= form.file_field :avatar, id: "student_avatar_input", style: "display: none;" %>
+      <button type="button" class="wireframe-btn" onclick="clearStudentFileInput()">DELETE</button>
+    </div>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">NAME</span>
+    <%= form.text_field :name, class: "field-input" %>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">ID</span>
+    <input type="text" class="field-input" placeholder="auto" disabled>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">GRADE</span>
+    <%= form.number_field :grade, class: "field-input" %>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">TERM</span>
+    <%= form.text_field :term, class: "field-input" %>
   </div>
 
   <br>
-
-  <div class="form-group">
-    <%= form.label :name, "NAME" %>
-    <%= form.text_field :name, class: "form-input" %>
-  </div>
-
-  <div class="form-group">
-    <label>ID</label>
-    <input type="text" class="form-input" placeholder="XXXX" disabled>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :grade, "GRADE" %>
-    <%= form.text_field :grade, class: "form-input", placeholder: "XXXX" %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :term, "TERM" %>
-    <%= form.text_field :term, class: "form-input", placeholder: "XXXX" %>
-  </div>
-
-  <br>
-
-  <div style="text-align: right; width: 380px;">
+  <div style="text-align: right;">
     <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
-
 <% end %>
 
-<br>
-<hr>
-<div>
-  <%= link_to "Back to students", students_path %>
-</div>
-
 <script>
-  function clearStudentFileInput() {
-    const fileInput = document.getElementById('student_avatar_input');
-    if (fileInput) {
-      fileInput.value = "";
-    }
-  }
+function clearStudentFileInput() {
+  const fileInput = document.getElementById('student_avatar_input');
+  if (fileInput) { fileInput.value = ""; }
+}
 </script>
