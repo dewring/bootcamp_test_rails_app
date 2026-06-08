@@ -3,6 +3,9 @@
 # ERROR
 # http://localhost:3000/money
 class MoneyController < ApplicationController
+  skip_before_action :authenticate_user!
+  skip_before_action :authenticate_user_with_token!
+  
   def exchange
     @currency = params[:currency]
     @amount = Float(params[:amount])
