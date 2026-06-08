@@ -1,32 +1,35 @@
-<h1>Leika School</h1>
+<% content_for :title, "Class Details" %>
 
-<p>SUBJECT: <%= @school_class.subject %></p>
+<div class="info-block" style="margin-bottom: 24px;">
+  <p><strong>SUBJECT</strong> <%= @school_class.subject %></p>
+  <p><strong>TEACHER</strong> <%= @school_class.teacher.name %></p>
+  <p><strong>ID</strong> <%= @school_class.id %></p>
+</div>
 
-<p>
-  TEACHER:
-  <%= @school_class.teacher.name %>
-</p>
+<h3 class="grade-toggle">▼ STUDENTS</h3>
 
-<h3>▼ STUDENTS</h3>
-
-<table border="1">
-  <tr>
-    <th>NAME</th>
-    <th>GRADE</th>
-    <th>TERM</th>
-  </tr>
-
-  <% @school_class.students.each do |student| %>
+<table class="grade-table">
+  <thead>
     <tr>
-      <td><%= student.name %></td>
-      <td><%= student.grade %></td>
-      <td><%= student.term %></td>
+      <th>NAME</th>
+      <th>GRADE</th>
+      <th>TERM</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @school_class.students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <td><%= student.grade %></td>
+        <td><%= student.term %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br>
-
-<a href="/school_classes">
-  Back to List
-</a>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_school_class_path(@school_class), class: "wireframe-btn" %>
+  <% end %>
+</div>

@@ -1,55 +1,18 @@
 <% content_for :title, "New Teacher" %>
 
-<h2>Leika School</h2>
-<hr>
-
-<h1>New Teacher</h1>
-
 <%= form_with(model: @teacher) do |form| %>
-  
-  <div>
-    <div style="width: 100px; height: 100px; border: 1px solid #000; border-radius: 50%; text-align: center; line-height: 100px;">
-      O
-    </div>
-    
-    <%= form.file_field :avatar, id: "teacher_avatar_input" %>
-    <button type="button" onclick="clearFileInput()">DELETE</button>
+  <div class="field-row">
+    <span class="field-label">NAME</span>
+    <%= form.text_field :name, class: "field-input" %>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">ID</span>
+    <input type="text" class="field-input" placeholder="auto" disabled>
   </div>
 
   <br>
-
-  <div>
-    <%= form.label :name, "NAME" %>
-    <%= form.text_field :name %>
+  <div style="text-align: right;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
-
-  <div>
-    <label>ID</label>
-    <input type="text" placeholder="XXXX" disabled>
-  </div>
-
-  <br>
-
-  <div>
-    <%= form.submit "SAVE" %>
-  </div>
-
 <% end %>
-
-<br>
-<hr>
-<div>
-  <%= link_to "Back to teachers", teachers_path %>
-</div>
-
-<script>
-  function clearFileInput() {
-    // Find the input element using the ID we created
-    const fileInput = document.getElementById('teacher_avatar_input');
-    
-    if (fileInput) {
-      //Clear the file selection by setting value to empty
-      fileInput.value = "";
-    }
-  }
-</script>

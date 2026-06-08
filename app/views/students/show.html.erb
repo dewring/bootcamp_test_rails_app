@@ -1,27 +1,44 @@
-<!--app/views/students/show.html.erb-->
-<h1>Leika School</h1>
+<% content_for :title, "Student Details" %>
 
-<p>NAME: <%= @student.name %></p>
-<p>GRADE: <%= @student.grade %></p>
-<p>TERM: <%= @student.term %></p>
-
-<h3>▼ GRADE</h3>
-<table border="1">
-  <tr>
-    <th>SUBJECT</th>
-    <th>POINTS EARNED</th>
-    <th>BOOSTER</th>
-    <th>TOTAL</th>
-  </tr>
-  <% @student.registrations.each do |registration| %>
+<div class="student-profile">
+  <div class="student-avatar large">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="#333" stroke-width="3"/>
+      <line x1="15" y1="15" x2="85" y2="85" stroke="#333" stroke-width="3"/>
+      <line x1="85" y1="15" x2="15" y2="85" stroke="#333" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="info-block">
+    <p><strong>NAME</strong> <%= @student.name %></p>
+    <p><strong>ID</strong> <%= @student.id %></p>
+    <p><strong>GRADE</strong> <%= @student.grade %></p>
+    <p><strong>TERM</strong> <%= @student.term %></p>
+  </div>
+</div>
+<h3 class="grade-toggle">▼ GRADE</h3>
+<table class="grade-table">
+  <thead>
     <tr>
-      <td><%= registration.school_class.subject %></td>
-      <td><%= registration.point %></td>
-      <td><%= registration.booster %></td>
-      <td><%= registration.booster + registration.point %></td>
+      <th>SUBJECT</th>
+      <th>POINTS EARNED</th>
+      <th>BOOSTER</th>
+      <th>TOTAL POINTS</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @student.registrations.each do |registration| %>
+      <tr>
+        <td><%= registration.school_class.subject %></td>
+        <td><%= registration.point %></td>
+        <td><%= registration.booster %></td>
+        <td><%= registration.point + registration.booster %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
-
 <br>
-<a href="/students">Back to List</a>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_student_path(@student), class: "wireframe-btn" %>
+  <% end %>
+</div>

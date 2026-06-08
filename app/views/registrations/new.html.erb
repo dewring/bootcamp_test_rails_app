@@ -1,48 +1,30 @@
 <% content_for :title, "New Registration" %>
 
-<h2>Leika School</h2>
-<hr>
+<%= form_with(model: @registration, url: student_registrations_path) do |form| %>
+  <div class="field-row">
+    <span class="field-label">STUDENT</span>
+    <%= form.collection_select :student_id, Student.all, :id, :name,
+        { prompt: "Select" }, { class: "field-input" } %>
+  </div>
 
-<h1>Create Registration</h1>
+  <div class="field-row">
+    <span class="field-label">CLASS</span>
+    <%= form.collection_select :school_class_id, SchoolClass.all, :id, :subject,
+        { prompt: "Select" }, { class: "field-input" } %>
+  </div>
 
-<%= form_with(model: @registration) do |form| %>
+  <div class="field-row">
+    <span class="field-label">POINT</span>
+    <%= form.number_field :point, min: 0, max: 100, class: "field-input" %>
+  </div>
 
-  <div>
-    <%= form.label :student_id, "STUDENT" %>
-    <%= form.collection_select :student_id, Student.all, :id, :name, prompt: "Select a Student" %>
+  <div class="field-row">
+    <span class="field-label">BOOSTER</span>
+    <%= form.number_field :booster, min: 0, max: 100, class: "field-input" %>
   </div>
 
   <br>
-
-  <div>
-    <%= form.label :school_class_id, "SCHOOL CLASS" %>
-    <%= form.collection_select :school_class_id, SchoolClass.all, :id, :subject, prompt: "Select a Class" %>
+  <div style="text-align: right;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
   </div>
-
-  <br>
-
-  <div>
-    <%= form.label :point, "POINT" %>
-    <%= form.number_field :point, min: 1, max: 100, placeholder: "1-100" %>
-  </div>
-
-  <br>
-
-  <div>
-    <%= form.label :booster, "BOOSTER" %>
-    <%= form.number_field :booster, min: 1, max: 100, placeholder: "1-100" %>
-  </div>
-
-  <br>
-
-  <div>
-    <%= form.submit "SAVE REGISTRATION" %>
-  </div>
-
 <% end %>
-
-<br>
-<hr>
-<div>
-  <%= link_to "Back to registrations", registrations_path %>
-</div>

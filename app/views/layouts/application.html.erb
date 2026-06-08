@@ -17,17 +17,42 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
->
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :application, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <div class="school-header">
+      <div class="school-title">
+        Leika School
+      </div>
+      <div class="school-auth">
+        <% if user_signed_in? %>
+          <div class="auth-info">
+            <span class="welcome-text">Welcome,<br><%= current_user.email %></span>
+            <%= button_to "Log-out", destroy_user_session_path, method: :delete, class: "auth-btn" %>
+          </div>
+        <% else %>
+          <%= link_to "Log-in", new_user_session_path, class: "auth-btn" %>
+          <%= link_to "Sign up", new_user_registration_path, class: "auth-btn" %>
+        <% end %>
+      </div>
+    </div>
+
+    <nav class="school-nav">
+      <%= link_to "students", students_path %>
+      <%= link_to "teachers", teachers_path %>
+      <%= link_to "classes", school_classes_path %>
+      <% if user_signed_in? %>
+        <%= link_to "registrations", student_registrations_path %>
+      <% end %>
+    </nav>
+
     <%= yield %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
   </body>
+    
 </html>

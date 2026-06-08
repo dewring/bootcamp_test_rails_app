@@ -1,12 +1,29 @@
-<% content_for :title, "Editing school class" %>
+<% content_for :title, "Edit Class" %>
 
-<h1>Editing school class</h1>
+<%= form_with(model: @school_class) do |form| %>
+  <div class="field-row">
+    <span class="field-label">SUBJECT</span>
+    <%= form.text_field :subject, class: "field-input" %>
+  </div>
 
-<%= render "form", school_class: @school_class %>
+  <div class="field-row">
+    <span class="field-label">TEACHER</span>
+    <%= form.collection_select :teacher_id, Teacher.all, :id, :name,
+        {}, { class: "field-input" } %>
+  </div>
+
+  <div class="field-row">
+    <span class="field-label">ID</span>
+    <input type="text" class="field-input" value="<%= @school_class.id %>" disabled>
+  </div>
+
+  <br>
+  <div style="text-align: right;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
+  </div>
+<% end %>
 
 <br>
-
-<div>
-  <%= link_to "Show this school class", @school_class %> |
-  <%= link_to "Back to school classes", school_classes_path %>
-</div>
+<%= render "shared/delete_button",
+    path: school_class_path(@school_class),
+    confirm_message: "수업을 삭제하시겠습니까?" %>

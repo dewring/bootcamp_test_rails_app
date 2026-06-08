@@ -1,4 +1,7 @@
 class SchoolClassesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+  skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
+
   def index
     @school_classes = SchoolClass.all
 
@@ -41,6 +44,7 @@ class SchoolClassesController < ApplicationController
       end
     end
   def edit
+    @school_class = SchoolClass.find(params[:id])
     respond_to do |format|
       format.html do
       end
@@ -69,6 +73,21 @@ class SchoolClassesController < ApplicationController
       end
     end
   end
+  def update
+    @school_class = SchoolClass.find(params[:id])
+    if @school_class.update(school_class_params)
+      redirect_to school_class_path(@school_class)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @school_class = SchoolClass.find(params[:id])
+    @school_class.destroy
+    redirect_to school_classes_path
+  end
+
   def school_class_params
     params.expect(school_class: [ :subject, :teacher_id ])
   end

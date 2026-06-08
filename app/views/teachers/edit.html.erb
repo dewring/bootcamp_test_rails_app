@@ -1,18 +1,23 @@
-<h1>Leika School</h1>
+<% content_for :title, "Edit Teacher" %>
 
-<p>NAME: <%= @teacher.name %></p>
+<%= form_with(model: @teacher) do |form| %>
+  <div class="field-row">
+    <span class="field-label">NAME</span>
+    <%= form.text_field :name, class: "field-input" %>
+  </div>
 
-<h3>EDIT TEACHER</h3>
+  <div class="field-row">
+    <span class="field-label">ID</span>
+    <input type="text" class="field-input" value="<%= @teacher.id %>" disabled>
+  </div>
 
-<p>
-  NAME:
-  <input type="text" value="<%= @teacher.name %>">
-</p>
+  <br>
+  <div style="text-align: right;">
+    <%= form.submit "SAVE", class: "wireframe-btn" %>
+  </div>
+<% end %>
 
-<button>SAVE</button>
-
-<br><br>
-
-<a href="/teachers/<%= @teacher.id %>">
-  Back to Teacher
-</a>
+<br>
+<%= render "shared/delete_button",
+    path: teacher_path(@teacher),
+    confirm_message: "선생님을 삭제하시겠습니까?" %>

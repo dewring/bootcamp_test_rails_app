@@ -1,23 +1,52 @@
 <% content_for :title, "Registrations" %>
 
-<h2>Leika School</h2>
-<hr>
+<h2 style="text-align: center; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 16px;">
+  registrations
+</h2>
 
-<h1>Registrations List</h1>
+<%# 필터 버튼 %>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+  <%= link_to "ALL", student_registrations_path,
+      class: "wireframe-btn #{params[:school_class_id].blank? ? 'active' : ''}" %>
+  <% @school_classes.each do |sc| %>
+    <%= link_to sc.subject, student_registrations_path(school_class_id: sc.id),
+        class: "wireframe-btn #{params[:school_class_id] == sc.id.to_s ? 'active' : ''}" %>
+  <% end %>
+</div>
 
-<div id="registrations">
+<div class="list-container">
   <% @registrations.each do |registration| %>
-    <p style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
-      <strong><%= registration.student&.name %></strong> - <%= registration.school_class&.subject %> 
+    <div class="list-item">
+      <strong><%= registration.student&.name %></strong> — <%= registration.school_class&.subject %>
       <br>
-      POINT: <%= registration.point %> | BOOSTER: <%= registration.booster %>
-      
-      <br>
-      <%= link_to "View Details", registration %> | 
-      <%= link_to "Edit", edit_registration_path(registration) %>
-    </p>
+      <table class="grade-table" style="margin-top: 6px;">
+        <thead>
+          <tr>
+            <th>POINT</th>
+            <th>BOOSTER</th>
+            <th>TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= registration.point %></td>
+            <td><%= registration.booster %></td>
+            <td><%= registration.point + registration.booster %></td>
+          </tr>
+        </tbody>
+      </table>
+      <% if user_signed_in? %>
+        <div style="margin-top: 6px; text-align: right;">
+          <%= link_to "EDIT", edit_student_registration_path(registration), class: "wireframe-btn" %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 </div>
 
 <br>
-<%= link_to "New registration", new_registration_path %>
+<% if user_signed_in? %>
+  <div style="text-align: center;">
+    <%= link_to "NEW", new_student_registration_path, class: "wireframe-btn" %>
+  </div>
+<% end %>

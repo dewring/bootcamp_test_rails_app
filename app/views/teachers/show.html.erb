@@ -1,21 +1,30 @@
-<h1>Leika School</h1>
+<% content_for :title, "Teacher Details" %>
 
-<p>NAME: <%= @teacher.name %></p>
+<div class="info-block" style="margin-bottom: 24px;">
+  <p><strong>NAME</strong> <%= @teacher.name %></p>
+  <p><strong>ID</strong> <%= @teacher.id %></p>
+</div>
 
-<h3>▼ CLASSES</h3>
+<h3 class="grade-toggle">▼ CLASSES</h3>
 
-<table border="1">
-  <tr>
-    <th>SUBJECT</th>
-  </tr>
-
-  <% @teacher.school_classes.each do |school_class| %>
+<table class="grade-table">
+  <thead>
     <tr>
-      <td><%= school_class.subject %></td>
+      <th>SUBJECT</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @teacher.school_classes.each do |school_class| %>
+      <tr>
+        <td><%= school_class.subject %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <br>
-
-<a href="/teachers">Back to List</a>
+<div style="text-align: right;">
+  <% if user_signed_in? %>
+    <%= link_to "EDIT", edit_teacher_path(@teacher), class: "wireframe-btn" %>
+  <% end %>
+</div>
