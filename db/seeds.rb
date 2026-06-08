@@ -4,9 +4,10 @@ SchoolClass.destroy_all
 Teacher.destroy_all
 User.destroy_all
 
-user1 = User.create!(email: "leika@example.com", password: "leikaka")
+user1 = User.create!(email: "leika@example.com", password: "leikaka", role: "teacher")
+user2 = User.create!(email: "admin@example.com", password: "adminmin", role: "admin")
 
-teacher1 = Teacher.create!(name: "Leika")
+teacher1 = Teacher.create!(name: "Leika", user_id: user1.id)
 teacher2 = Teacher.create!(name: "Jaina")
 
 student1 = Student.create!(name: "Chiikawa", grade: 1, term: "first")
