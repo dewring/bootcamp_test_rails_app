@@ -13,6 +13,8 @@
 </div>
 
 <br>
-<div style="text-align: center;">
-  <%= link_to "NEW", new_school_class_path, class: "wireframe-btn", data: { turbo: false } %>
-</div>
+  <% if user_signed_in? && admin_only? %>
+    <div style="text-align: center;">
+      <%= link_to "NEW", new_school_class_path, class: "wireframe-btn", data: { turbo: false } %>
+    </div>
+  <% end %>
