@@ -60,20 +60,20 @@ class SchoolClassesControllerTest < ActionDispatch::IntegrationTest
     assert_equal teacher.id, json["teacher_id"]
   end
 
-   test "create html creates a schoolclass with correct params" do
-      sign_in_as_user
-      teacher = Teacher.create!(name: "choco")
-      post "/school_classes", params: {
-        school_class: {
-      subject: "being lazy",
-      teacher_id: teacher.id
-       }
-      }
-      assert_response :redirect
-      follow_redirect!
-      assert @response.body.include?("being lazy")
-      assert @response.body.include?("#{teacher.id}")
-   end
+  test "create html creates a schoolclass with correct params" do
+    sign_in_as_user
+    teacher = Teacher.create!(name: "choco")
+    post "/school_classes", params: {
+      school_class: {
+    subject: "being lazy",
+    teacher_id: teacher.id
+     }
+    }
+    assert_response :redirect
+    follow_redirect!
+    assert @response.body.include?("being lazy")
+    assert @response.body.include?("#{teacher.id}")
+  end
   test "should not create schoolclass with incorrect params as json" do
     user = User.create!(email: "test@test.com", password: "password")
     post "/school_classes.json", params: { subject: "", teacher_id: "" },
