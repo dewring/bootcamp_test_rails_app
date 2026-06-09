@@ -38,6 +38,9 @@ class RegistrationsController < ApplicationController
     end
   end
   def new
+    unless current_user.admin? || current_user.teacher?
+      return  redirect_to student_registrations_path, alert: "Only admin or teacher can create registration"
+    end
     @registration = Registration.new
     respond_to do |format|
       format.html do
@@ -46,12 +49,22 @@ class RegistrationsController < ApplicationController
   end
   def edit
     @registration = Registration.find(params[:id])
+
+    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+      return  redirect_to student_registrations_path, alert: "Only admin or teacher can edit registration"
+    end
     respond_to do |format|
       format.html do
       end
     end
   end
   def create
+    unless current_user.admin? || current_user.teacher?
+      respond_to do |format|
+        format.html { return redirect_to student_registrations_path, alert: "Only admin or teacher can create registration" }
+        format.json { return render json: { errors: [ "Only admin or teacher can create registration" ] }, status: 401 }
+      end
+    end
     @registration = Registration.new(registration_params)
     # .new는 데이터베이스에는 영향을 주지 않는다 .create는 메모리에 객체를 만들고 데이터베이스에 저장까지 한다
     # 그래서 주로 .create는 console test 나 seed에 사용하고 컨트롤러에는 new나 create를 사용하지만 이 경우에는 new를 해야 충돌이 없다.
@@ -63,7 +76,6 @@ class RegistrationsController < ApplicationController
           render :new, status: :unprocessable_entity
         end
       end
-
       format.json do
         if @registration.save
           render json: @registration.as_json, status: 201
@@ -76,6 +88,13 @@ class RegistrationsController < ApplicationController
   def update
     # edit은 단순히 데이터를 보여주는 역할만 하는 거고 update는 진짜로 수정할 수 있게 하는 기능
     @registration = Registration.find(params[:id])
+    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+      respond_to do |format|
+        format.html { return redirect_to student_registrations_path, alert: "Only admin and owner teacher can update registration" }
+        format.json { return render json: { errors: [ "Only admin and owner teacher can update registration" ] }, status: 401 }
+      end
+    end
+
     respond_to do |format|
       format.html do
         if @registration.update(registration_params)
@@ -97,6 +116,9 @@ class RegistrationsController < ApplicationController
 
   def destroy
     @registration = Registration.find(params[:id])
+    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+      return redirect_to student_registrations_path, alert: "Only admin and owner teacher can delete registration"
+    end
     @registration.destroy
     redirect_to student_registrations_path
   end
