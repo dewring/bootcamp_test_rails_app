@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<%= form_with(model: @student, url: student_path(@student), method: :patch) do |form| %>
+<%= form_with(model: @student, url: student_path(@student), method: :patch, data: {turbo: false}) do |form| %>
   <div class="field-row">
     <span class="field-label">NAME</span>
     <%= form.text_field :name, class: "field-input" %>

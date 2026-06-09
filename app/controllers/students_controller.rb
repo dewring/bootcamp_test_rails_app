@@ -42,53 +42,76 @@ class StudentsController < ApplicationController
     @student = Student.new
     respond_to do |format|
       format.html do
+        unless current_user.admin?
+          redirect_to students_path, alert: "Only admin can create Student"
+        end
       end
     end
   end
-
   def create
     @student = Student.new(student_params)
     respond_to do |format|
       format.html do
-        if @student.save
-          redirect_to students_path
+        if current_user.admin?
+          if @student.save
+            redirect_to students_path
+          else
+            render :new, status: :unprocessable_entity
+          end
         else
-          render :new, status: :unprocessable_entity
+          redirect_to students_path, alert: "Only admin can create Student"
         end
       end
 
       format.json do
-        if @student.valid?
-          render json: @student.as_json, status: 201
+        if current_user.admin?
+          if @student.save
+            render json: @student.as_json, status: 201
+          else
+            render json: { errors: @student.errors.full_messages }, status: 422
+          end
         else
-          render json: { errors: @student.errors.full_messages }, status: 422
+          render json: { errors: [ "Only admin can create Student" ] }, status: 401
         end
       end
     end
   end
+
   def edit
     @student = Student.find(params[:id])
     respond_to do |format|
       format.html do
+        unless current_user.admin?
+          redirect_to students_path, alert: "Only admin can edit Student"
+        end
       end
     end
   end
 
   def update
     @student = Student.find(params[:id])
+
     respond_to do |format|
       format.html do
-        if @student.update(student_params)
-          redirect_to student_path(@student)
+        if current_user.admin?
+          if @student.update(student_params)
+            redirect_to student_path(@student)
+          else
+            render :edit, status: :unprocessable_entity
+          end
         else
-          render :edit, status: :unprocessable_entity
+          redirect_to students_path, alert: "Only admin can update Student"
         end
       end
       format.json do
-        if @student.update(student_params)
-          render json: @student.as_json, status: 200
+        if current_user.admin?
+          if @student.update(student_params)
+            render json: @student.as_json, status: :ok
+          else
+            render json: { errors: @student.errors.full_messages }, status: 422
+          end
         else
-          render json: { errors: @student.errors.full_messages }, status: 422
+          render json: { errors: [ "Only admin can update Student" ] }, status: 401
         end
       end
     end
@@ -96,8 +119,24 @@ class StudentsController < ApplicationController
 
   def destroy
     @student = Student.find(params[:id])
-    @student.destroy
-    redirect_to students_path
+    respond_to do |format|
+      format.json do
+        if current_user.admin?
+          @student.destroy
+          render json: {}, status: 200
+        else
+          render json: { errors: [ "Only admin can delete Student" ] }, status: 401
+        end
+      end
+      format.html do
+        if current_user.admin?
+          @student.destroy
+          redirect_to students_path
+        else
+          redirect_to students_path, alert: "Only admin can delete student"
+        end
+      end
+    end
   end
 
   def student_params

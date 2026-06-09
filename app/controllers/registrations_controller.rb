@@ -53,9 +53,9 @@ class RegistrationsController < ApplicationController
   end
   def create
     @registration = Registration.new(registration_params)
-      # .new는 데이터베이스에는 영향을 주지 않는다 .create는 메모리에 객체를 만들고 데이터베이스에 저장까지 한다
-      # 그래서 주로 .create는 console test 나 seed에 사용하고 컨트롤러에는 new나 create를 사용하지만 이 경우에는 new를 해야 충돌이 없다.
-      respond_to do |format|
+    # .new는 데이터베이스에는 영향을 주지 않는다 .create는 메모리에 객체를 만들고 데이터베이스에 저장까지 한다
+    # 그래서 주로 .create는 console test 나 seed에 사용하고 컨트롤러에는 new나 create를 사용하지만 이 경우에는 new를 해야 충돌이 없다.
+    respond_to do |format|
       format.html do
         if @registration.save
           redirect_to student_registrations_path
@@ -64,7 +64,7 @@ class RegistrationsController < ApplicationController
         end
       end
 
-       format.json do
+      format.json do
         if @registration.save
           render json: @registration.as_json, status: 201
         else

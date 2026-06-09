@@ -5,6 +5,8 @@ class Teacher < ApplicationRecord
   has_many :registrations, through: :school_classes
   has_many :students, through: :registrations
 
+  belongs_to :user, optional: true
+
   # before_validation :test_method_before_validation
   # after_validation :test_method_after_validation
   # before_save :test_method_before_save

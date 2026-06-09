@@ -1,6 +1,6 @@
 <% content_for :title, "New Student" %>
 
-<%= form_with(model: @student) do |form| %>
+<%= form_with(model: @student, data: {turbo: false}) do |form| %>
   <div class="avatar-wrap">
     <div class="avatar-circle">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

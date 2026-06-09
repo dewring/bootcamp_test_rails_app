@@ -7,12 +7,12 @@
 <div class="list-container">
   <% @teachers.each do |teacher| %>
     <div class="list-item">
-      <%= link_to teacher.name, teacher_path(teacher), class: "list-link" %>
+      <%= link_to teacher.name, teacher_path(teacher), class: "list-link", data: { turbo: false } %>
     </div>
   <% end %>
 </div>
 
 <br>
 <div style="text-align: center;">
-  <%= link_to "NEW", new_teacher_path, class: "wireframe-btn" %>
+  <%= link_to "NEW", new_teacher_path, class: "wireframe-btn", data: { turbo: false } %>
 </div>
