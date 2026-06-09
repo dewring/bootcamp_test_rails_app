@@ -37,7 +37,7 @@
       </table>
       <% if user_signed_in? %>
         <div style="margin-top: 6px; text-align: right;">
-          <%= link_to "EDIT", edit_student_registration_path(registration), class: "wireframe-btn" %>
+          <%= link_to "EDIT", edit_student_registration_path(registration), class: "wireframe-btn", data: { turbo: false } %>
         </div>
       <% end %>
     </div>
@@ -47,6 +47,6 @@
 <br>
 <% if user_signed_in? %>
   <div style="text-align: center;">
-    <%= link_to "NEW", new_student_registration_path, class: "wireframe-btn" %>
+    <%= link_to "NEW", new_student_registration_path, class: "wireframe-btn", data: { turbo: false } %>
   </div>
 <% end %>
