@@ -1,6 +1,7 @@
 class SchoolClassesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index, :show ]
   skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
+  before_action :only_admin_teacher!, only: [ :edit, :new ]
 
   def index
     @school_classes = SchoolClass.all
@@ -44,9 +45,6 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        unless current_user.admin? || current_user.teacher?
-          redirect_to school_classes_path, alert: "Only admin or teacher can create School Class"
-        end
       end
     end
   end
@@ -57,7 +55,7 @@ class SchoolClassesController < ApplicationController
         # @school_class.save와  @school_class.valid?의 차이점은
         # valid?는 유효검사만 하고 직접 저장하지 않고 save는 직접 저장한다
         # 제이드한테 왜 valid?를 넣었었는지 묻기
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
+        if helpers.can_manage_school_class?(@school_class)
           if @school_class.save
             redirect_to school_classes_path
           else
@@ -69,14 +67,14 @@ class SchoolClassesController < ApplicationController
       end
 
       format.json do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
+        if helpers.can_manage_school_class?(@school_class)
           if @school_class.save
             render json: @school_class.as_json, status: 201
           else
             render json: { errors: @school_class.errors.full_messages }, status: 422
           end
         else
-          render json: { errors: [ "Only admin or owner can create School Class" ] }
+          render json: { errors: [ "Only admin or owner can create School Class" ] }, status: 401
         end
       end
     end
@@ -86,7 +84,7 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        unless current_user.admin? || @school_class.teacher.user_id == current_user.id
+        unless helpers.can_manage_school_class?(@school_class)
           redirect_to school_classes_path, alert: "Only admin or owner can edit School Class"
         end
       end
@@ -97,7 +95,7 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
+        if helpers.can_manage_school_class?(@school_class)
           if @school_class.update(school_class_params)
             redirect_to school_class_path(@school_class)
           else
@@ -108,7 +106,7 @@ class SchoolClassesController < ApplicationController
         end
       end
       format.json do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
+        if helpers.can_manage_school_class?(@school_class)
           if @school_class.update(school_class_params)
             render json: @school_class.as_json, status: :ok
           else
@@ -126,7 +124,7 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
+        if helpers.can_manage_school_class?(@school_class)
           @school_class.destroy
           redirect_to school_classes_path
         else
@@ -134,6 +132,10 @@ class SchoolClassesController < ApplicationController
         end
       end
     end
+  end
+
+  def can_manage?
+    # check if can manage specific school class
   end
 
   private

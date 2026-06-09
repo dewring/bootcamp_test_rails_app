@@ -38,7 +38,7 @@ class RegistrationsController < ApplicationController
     end
   end
   def new
-    unless current_user.admin? || current_user.teacher?
+    unless helpers.can_create_resource?
       return  redirect_to student_registrations_path, alert: "Only admin or teacher can create registration"
     end
     @registration = Registration.new
@@ -50,7 +50,7 @@ class RegistrationsController < ApplicationController
   def edit
     @registration = Registration.find(params[:id])
 
-    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+    unless helpers.can_manage_registration?(@registration)
       return  redirect_to student_registrations_path, alert: "Only admin or teacher can edit registration"
     end
     respond_to do |format|
@@ -59,7 +59,7 @@ class RegistrationsController < ApplicationController
     end
   end
   def create
-    unless current_user.admin? || current_user.teacher?
+    unless helpers.can_create_resource?
       respond_to do |format|
         format.html { return redirect_to student_registrations_path, alert: "Only admin or teacher can create registration" }
         format.json { return render json: { errors: [ "Only admin or teacher can create registration" ] }, status: 401 }
@@ -88,7 +88,7 @@ class RegistrationsController < ApplicationController
   def update
     # edit은 단순히 데이터를 보여주는 역할만 하는 거고 update는 진짜로 수정할 수 있게 하는 기능
     @registration = Registration.find(params[:id])
-    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+    unless helpers.can_manage_registration?(@registration)
       respond_to do |format|
         format.html { return redirect_to student_registrations_path, alert: "Only admin and owner teacher can update registration" }
         format.json { return render json: { errors: [ "Only admin and owner teacher can update registration" ] }, status: 401 }
@@ -116,7 +116,7 @@ class RegistrationsController < ApplicationController
 
   def destroy
     @registration = Registration.find(params[:id])
-    unless current_user.admin? || @registration.school_class.teacher.user_id == current_user.id
+    unless helpers.can_manage_registration?(registration)
       return redirect_to student_registrations_path, alert: "Only admin and owner teacher can delete registration"
     end
     @registration.destroy
