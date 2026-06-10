@@ -1,12 +1,12 @@
 require "test_helper"
 
 class TeachersControllerTest < ActionDispatch::IntegrationTest
-  def sign_in_as_user
-    user = User.create!(email: "test@test.com", password: "password")
+  def sign_in_as_admin
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
     sign_in user
   end
   test "index html displays teachers" do
-    sign_in_as_user
+    sign_in_as_admin
     get "/teachers"
     assert_response :success
     assert @response.body.include?("teachers")
@@ -22,7 +22,7 @@ class TeachersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show html displays teacher information" do
-    sign_in_as_user
+    sign_in_as_admin
     teacher = Teacher.find_by(name: "Leika")
     get "/teachers/#{teacher.id}"
     assert_response :success
@@ -40,14 +40,14 @@ class TeachersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create teacher with correct params as json" do
-    user = User.create!(email: "test@test.com", password: "password")
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
     post "/teachers.json", params: { name: "podo" }, as: :json,
       headers: { "Authorization" => "Bearer #{user.api_token}" }
     assert_response 201
   end
 
   test "create html creates a teacher" do
-    sign_in_as_user
+    sign_in_as_admin
     post "/teachers", params: { teacher: { name: "podo" } }
     assert_response :redirect
     follow_redirect!
@@ -55,7 +55,7 @@ class TeachersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create teacher with incorrect params as json" do
-    user = User.create!(email: "test@test.com", password: "password")
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
     post "/teachers.json", params: { name: "" }, as: :json,
         headers: { "Authorization" => "Bearer #{user.api_token}" }
     assert_response 422

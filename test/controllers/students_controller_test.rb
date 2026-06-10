@@ -63,7 +63,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create student with correct params" do
-    user = User.create!(email: "test@test.com", password: "password")
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
     post "/students.json",
       params: { name: "shisha", grade: 5, term: "second" },
       as: :json,
@@ -76,7 +76,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "second", json["term"]
   end
   test "should not create student with incorrect params" do
-    user = User.create!(email: "test@test.com", password: "password")
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
     post "/students.json",
       params: { name: "shisha", grade: -5, term: "third" },
       as: :json,
