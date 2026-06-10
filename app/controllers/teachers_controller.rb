@@ -1,8 +1,7 @@
 class TeachersController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index, :show ]
   skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
-  before_action :only_admin!
-  skip_before_action :only_admin!, only: [ :index, :show ]
+  before_action :only_admin!, except: [ :index, :show ]
   def index
     @teachers = Teacher.all
 
@@ -41,7 +40,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.new
     respond_to do |format|
       format.html do
-        redirect_to teachers_path, alert: "Only admin can create Teacher"
       end
     end
   end
@@ -69,7 +67,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find(params[:id])
     respond_to do |format|
       format.html do
-        redirect_to teachers_path, alert: "Only admin can edit Teacher"
       end
     end
   end

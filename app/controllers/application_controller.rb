@@ -51,13 +51,17 @@ class ApplicationController < ActionController::Base
         redirect_back_or_to root_url, alert: "You aren't admin or teacher"
       end
       format.json do
-        render json: { error: "You aren't admin or teacher" }, status: 401
+        render json: { error: not_admin_teacher_error_message }, status: 401
       end
     end
   end
 
+  def not_admin_teacher_error_message
+    "You aren't admin or teacher"
+  end
+
   def only_admin_teacher!
-    unless current_user != nil && can_create_resource?
+    unless current_user != nil && helpers.can_create_resource?
       logger.info "User #{current_user.email} tried to enter admin and teacher section." if current_user != nil
       raise CantManageError
     end
