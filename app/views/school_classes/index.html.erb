@@ -13,7 +13,7 @@
 </div>
 
 <br>
-  <% if user_signed_in? && admin_only? %>
+  <% if user_signed_in? && can_create_resource? %>
     <div style="text-align: center;">
       <%= link_to "NEW", new_school_class_path, class: "wireframe-btn", data: { turbo: false } %>
     </div>

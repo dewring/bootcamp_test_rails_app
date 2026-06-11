@@ -5,7 +5,10 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     user = User.create!(email: "test@test.com", password: "password")
     sign_in user
   end
-
+  def sign_in_as_admin
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    sign_in user
+  end
   test "index html displays registrations" do
     sign_in_as_user
     get "/student_registrations"
@@ -102,5 +105,95 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_includes json["errors"], "School class must exist"
     assert_includes json["errors"], "Point must be in 0..100"
     assert_includes json["errors"], "Booster must be in 0..100"
+  end
+  # not found
+  test "json show returns 404 for missing registration" do
+    user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    get "/student_registrations/1234.json", params: { name: "test" }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 404
+  end
+
+  # update
+  test "json update returns 200 with valid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    registration = Registration.first
+    patch "/student_registrations/#{registration.id}.json", params: { registration: { point: 80, booster: 20 } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 200
+  end
+
+  test "json update returns 422 with invalid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    registration = Registration.first
+    patch "/student_registrations/#{registration.id}.json", params: { registration: { point: -10, booster: -10 } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 422
+  end
+
+  test "json update returns 401 when not owner teacher" do
+    current_user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    other_user = User.create!(email: "tttt@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: other_user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    student = Student.create!(name: "Test_st", grade: 1, term: "first")
+    registration = Registration.create!(school_class: school_class, student: student, point: 10, booster: 10)
+    patch "/student_registrations/#{registration.id}.json", params: { registration: { point: 10, booster: 10 } }, as: :json,
+      headers: { "Authorization" => "Bearer #{current_user.api_token}" }
+    assert_response 401
+  end
+
+  # destroy
+  test "json destroy returns 401 when not owner teacher" do
+    current_user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    other_user = User.create!(email: "tttt@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: other_user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    student = Student.create!(name: "Test_st", grade: 1, term: "first")
+    registration = Registration.create!(school_class: school_class, student: student, point: 10, booster: 10)
+    delete "/student_registrations/#{registration.id}.json", as: :json,
+      headers: { "Authorization" => "Bearer #{current_user.api_token}" }
+    assert_response 401
+  end
+  test "html new button is visible to admin" do
+    sign_in_as_admin
+    get "/student_registrations"
+    assert_response :success
+    assert_includes @response.body, "NEW"
+  end
+  test "html new button is visible to teacher" do
+    sign_in_as_user
+    get "/student_registrations"
+    assert_response :success
+    assert_includes @response.body, "NEW"
+  end
+  test "html edit button is visible to admin" do
+    sign_in_as_admin
+    get "/student_registrations"
+    assert_response :success
+    assert_includes @response.body, "EDIT"
+  end
+  test "html edit button is visible to owner teacher" do
+    user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    student = Student.create!(name: "Test_st", grade: 1, term: "first")
+    registration = Registration.create!(school_class: school_class, student: student, point: 10, booster: 10)
+    sign_in user
+    get "/student_registrations"
+    assert_response :success
+    assert_includes @response.body, "EDIT"
+  end
+  test "html edit button is hidden from non-owner teacher" do
+    user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    other_user = User.create!(email: "tttt@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: other_user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    student = Student.create!(name: "Test_st", grade: 1, term: "first")
+    registration = Registration.create!(school_class: school_class, student: student, point: 10, booster: 10)
+    sign_in user
+    get "/student_registrations"
+    assert_response :success
+    refute_includes @response.body, "EDIT"
   end
 end

@@ -5,6 +5,10 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     user = User.create!(email: "test@test.com", password: "password")
     sign_in user
   end
+  def sign_in_as_admin
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    sign_in user
+  end
 
   test "index html displays students" do
     sign_in_as_user
@@ -85,5 +89,60 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(@response.body)
     assert_equal [ "Grade must be greater than 0", "Term is not included in the list" ], json["errors"]
+  end
+
+  # not found
+  test "json show returns 404 for missing student" do
+    user = User.create!(email: "test@test.com", password: "password")
+    get "/students/1234.json", params: { name: "test" }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 404
+  end
+
+  # unauthorised
+  test "json create returns 401 when not admin" do
+    user = User.create!(email: "test@test.com", password: "password", role: "teacher")
+    post "/students.json", params: { name: "test" }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 401
+  end
+
+  # update
+  test "json update returns 200 with valid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    student = Student.find_by(name: "Chiikawa")
+    patch "/students/#{student.id}.json", params: { student: { name: "Chiikawa" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 200
+  end
+
+  test "json update returns 422 with invalid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    student = Student.find_by(name: "Chiikawa")
+    patch "/students/#{student.id}.json", params: { student: { name: "" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 422
+  end
+
+  test "json update returns 401 when not admin" do
+    user = User.create!(email: "test@test.com", password: "password", role: "teacher")
+    student = Student.find_by(name: "Chiikawa")
+    patch "/students/#{student.id}.json", params: { student: { name: "Chiikawa" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 401
+  end
+  test "html edit button is visible to admin" do
+    sign_in_as_admin
+    student = Student.find_by(name: "Chiikawa")
+    get "/students/#{student.id}"
+    assert_response :success
+    assert_includes @response.body, "EDIT"
+  end
+  test "html edit button is hidden from teacher" do
+    sign_in_as_user
+    student = Student.find_by(name: "Chiikawa")
+    get "/students/#{student.id}"
+    assert_response :success
+    refute_includes @response.body, "EDIT"
   end
 end

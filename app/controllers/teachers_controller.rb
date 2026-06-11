@@ -1,7 +1,7 @@
 class TeachersController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index, :show ]
   skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
-  before_action :only_admin!, except: [ :index, :show ]
+  before_action :only_admin!, except: [ :index, :show, :new ]
   def index
     @teachers = Teacher.all
 
