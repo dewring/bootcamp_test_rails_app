@@ -1,7 +1,8 @@
 class SchoolClassesController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :index, :show ]
   skip_before_action :authenticate_user_with_token!, only: [ :index, :show ]
-
+  before_action :only_admin_teacher!, only: [ :new, :create ]
+  before_action :only_admin_or_owner!, except: [ :index, :show, :new, :create ]
   def index
     @school_classes = SchoolClass.all
 
@@ -44,9 +45,6 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        unless current_user.admin? || current_user.teacher?
-          redirect_to school_classes_path, alert: "Only admin or teacher can create School Class"
-        end
       end
     end
   end
@@ -57,26 +55,18 @@ class SchoolClassesController < ApplicationController
         # @school_class.save와  @school_class.valid?의 차이점은
         # valid?는 유효검사만 하고 직접 저장하지 않고 save는 직접 저장한다
         # 제이드한테 왜 valid?를 넣었었는지 묻기
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
-          if @school_class.save
-            redirect_to school_classes_path
-          else
-            render :new, status: :unprocessable_entity
-          end
+        if @school_class.save
+          redirect_to school_classes_path
         else
-          redirect_to school_classes_path, alert: "Only admin or owner can create School Class"
+          render :new, status: :unprocessable_entity
         end
       end
 
       format.json do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
-          if @school_class.save
-            render json: @school_class.as_json, status: 201
-          else
-            render json: { errors: @school_class.errors.full_messages }, status: 422
-          end
+        if @school_class.save
+          render json: @school_class.as_json, status: 201
         else
-          render json: { errors: [ "Only admin or owner can create School Class" ] }
+          render json: { errors: @school_class.errors.full_messages }, status: 422
         end
       end
     end
@@ -86,53 +76,49 @@ class SchoolClassesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        unless current_user.admin? || @school_class.teacher.user_id == current_user.id
-          redirect_to school_classes_path, alert: "Only admin or owner can edit School Class"
-        end
       end
     end
   end
   def update
-    @school_class = SchoolClass.find(params[:id])
-
     respond_to do |format|
       format.html do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
-          if @school_class.update(school_class_params)
-            redirect_to school_class_path(@school_class)
-          else
-            render :edit, status: :unprocessable_entity
-          end
+        if @school_class.update(school_class_params)
+          redirect_to school_class_path(@school_class)
         else
-          redirect_to school_classes_path, alert: "Only admin or owner can update School Class"
+          render :edit, status: :unprocessable_entity
         end
       end
       format.json do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
-          if @school_class.update(school_class_params)
-            render json: @school_class.as_json, status: :ok
-          else
-            render json: { errors: @school_class.errors.full_messages }, status: 422
-          end
+        if @school_class.update(school_class_params)
+          render json: @school_class.as_json, status: :ok
         else
-          render json: { errors: [ "Only admin or owner can update School Class" ] }, status: 401
+          render json: { errors: @school_class.errors.full_messages }, status: 422
         end
       end
     end
   end
 
   def destroy
-    @school_class = SchoolClass.find(params[:id])
-
     respond_to do |format|
       format.html do
-        if current_user.admin? || @school_class.teacher.user_id == current_user.id
-          @school_class.destroy
-          redirect_to school_classes_path
-        else
-          redirect_to school_classes_path, alert: "Only admin or owner can delete School Class"
-        end
+        @school_class.destroy
+        redirect_to school_classes_path
       end
+    end
+  end
+
+  def can_manage?
+    # check if can manage specific school class
+    @school_class = SchoolClass.find(params[:id])
+    helpers.can_manage_school_class?(@school_class)
+  end
+
+  def not_admin_teacher_error_message
+    # custom error message
+    if @school_class.nil?
+      super
+    else
+      "You aren't admin or #{@school_class.subject} owner."
     end
   end
 

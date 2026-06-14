@@ -35,7 +35,7 @@
           </tr>
         </tbody>
       </table>
-      <% if user_signed_in? %>
+      <% if user_signed_in? && can_manage_registration?(registration) %>
         <div style="margin-top: 6px; text-align: right;">
           <%= link_to "EDIT", edit_student_registration_path(registration), class: "wireframe-btn", data: { turbo: false } %>
         </div>
@@ -45,7 +45,7 @@
 </div>
 
 <br>
-<% if user_signed_in? %>
+<% if user_signed_in? && can_create_resource? %>
   <div style="text-align: center;">
     <%= link_to "NEW", new_student_registration_path, class: "wireframe-btn", data: { turbo: false } %>
   </div>

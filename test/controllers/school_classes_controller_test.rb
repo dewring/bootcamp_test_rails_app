@@ -5,6 +5,10 @@ class SchoolClassesControllerTest < ActionDispatch::IntegrationTest
     user = User.create!(email: "test@test.com", password: "password")
     sign_in user
   end
+  def sign_in_as_admin
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    sign_in user
+  end
 
   test "index html displays school class" do
     sign_in_as_user
@@ -84,5 +88,77 @@ class SchoolClassesControllerTest < ActionDispatch::IntegrationTest
     json = JSON.parse(@response.body)
     assert_includes json["errors"], "Subject can't be blank"
     assert_includes json["errors"], "Teacher must exist"
+  end
+  # not found
+  test "json show returns 404 for missing school class" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    get "/school_classes/1234.json", params: { name: "test" }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 404
+  end
+
+  # update
+  test "json update returns 200 with valid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    school_class = SchoolClass.find_by(subject: "hunting")
+    patch "/school_classes/#{school_class.id}.json", params: { school_class: { subject: "hunting" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 200
+  end
+
+  test "json update returns 422 with invalid params" do
+    user = User.create!(email: "test@test.com", password: "password", role: "admin")
+    school_class = SchoolClass.find_by(subject: "hunting")
+    patch "/school_classes/#{school_class.id}.json", params: { school_class: { subject: "" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{user.api_token}" }
+    assert_response 422
+  end
+
+  test "json update returns 401 when not owner teacher" do
+    current_user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    other_user = User.create!(email: "tttt@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: other_user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    patch "/school_classes/#{school_class.id}.json", params: { school_class: { subject: "hunting" } }, as: :json,
+      headers: { "Authorization" => "Bearer #{current_user.api_token}" }
+    assert_response 401
+  end
+  test "html new button is visible to admin" do
+    sign_in_as_admin
+    get "/school_classes"
+    assert_response :success
+    assert_includes @response.body, "NEW"
+  end
+  test "html new button is visible to teacher" do
+    sign_in_as_user
+    get "/school_classes"
+    assert_response :success
+    assert_includes @response.body, "NEW"
+  end
+  test "html edit button is visible to admin" do
+    sign_in_as_admin
+    school_class = SchoolClass.find_by(subject: "being cute")
+    get "/school_classes/#{school_class.id}"
+    assert_response :success
+    assert_includes @response.body, "EDIT"
+  end
+  test "html edit button is visible to owner teacher" do
+    user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    sign_in user
+    get "/school_classes/#{school_class.id}"
+    assert_response :success
+    assert_includes @response.body, "EDIT"
+  end
+  test "html edit button is hidden from non-owner teacher" do
+    user = User.create!(email: "test@test.com", password: "testtest", role: "teacher")
+    other_user = User.create!(email: "tttt@test.com", password: "testtest", role: "teacher")
+    teacher = Teacher.create!(name: "Test", user: other_user)
+    school_class = SchoolClass.create!(subject: "Test", teacher: teacher)
+    sign_in user
+    get "/school_classes/#{school_class.id}"
+    assert_response :success
+    refute_includes @response.body, "EDIT"
   end
 end

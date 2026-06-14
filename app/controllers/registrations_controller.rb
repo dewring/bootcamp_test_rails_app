@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  before_action :only_admin_teacher!, only: [ :new, :create ]
+  before_action :only_admin_or_owner!, except: [ :index, :show, :new, :create ]
   def index
     if params[:school_class_id].present?
       @registrations = Registration.where(school_class_id: params[:school_class_id])
@@ -63,7 +65,6 @@ class RegistrationsController < ApplicationController
           render :new, status: :unprocessable_entity
         end
       end
-
       format.json do
         if @registration.save
           render json: @registration.as_json, status: 201
@@ -75,7 +76,6 @@ class RegistrationsController < ApplicationController
   end
   def update
     # edit은 단순히 데이터를 보여주는 역할만 하는 거고 update는 진짜로 수정할 수 있게 하는 기능
-    @registration = Registration.find(params[:id])
     respond_to do |format|
       format.html do
         if @registration.update(registration_params)
@@ -96,9 +96,18 @@ class RegistrationsController < ApplicationController
   end
 
   def destroy
+    respond_to do |format|
+      format.html do
+        @registration.destroy
+        redirect_to student_registrations_path
+      end
+    end
+  end
+
+  def can_manage?
+    # check if can manage specific school class
     @registration = Registration.find(params[:id])
-    @registration.destroy
-    redirect_to student_registrations_path
+    helpers.can_manage_registration?(@registration)
   end
 
   def registration_params
